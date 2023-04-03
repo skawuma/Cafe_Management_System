@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cafe.constants.CafeConstants;
-import com.cafe.dao.Billdao;
+import com.cafe.dao.BillDao;
 import com.cafe.entity.Bill;
+import com.cafe.jwt.JwtFilter;
 import com.cafe.service.BillService;
 import com.cafe.utils.CafeUtils;
 
@@ -50,8 +51,13 @@ Apr 2, 2023
 @Service
 public class BillServiceImpl implements BillService {
 	
-	@Autowired
-	Billdao billdao;
+
+	
+	  @Autowired
+	    JwtFilter jwtFilter;
+
+	    @Autowired
+	    BillDao billDao;
 	
 	   static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringApplication.class);
 
@@ -139,7 +145,7 @@ public class BillServiceImpl implements BillService {
             bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
             bill.setProductDetail((String) requestMap.get("productDetails"));
            // bill.setCreatedBy(jwtFilter.getCurrentUser());
-            billdao.save(bill);
+            billDao.save(bill);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -197,5 +203,22 @@ public class BillServiceImpl implements BillService {
                 return new Font();
         }
     }
-	
+
+
+
+
+
+
+	@Override
+	public ResponseEntity<List<Bill>> getBills() {
+		
+		List<Bill> list = new ArrayList<>();
+        if (jwtFilter.isAdmin()) {
+            list = billDao.getAllBills();
+        } else {
+            list = billDao.getBillByUserName(jwtFilter.getCurrentUser());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+        
+	}
 }

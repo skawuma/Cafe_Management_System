@@ -27,7 +27,6 @@ Mar 29, 2023
 @Setter
 @Getter
 @Data
-@Builder(builderClassName = "Builder", toBuilder = true)
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -43,8 +42,8 @@ private static final long serialVersionUID = 1L;
 @Column(name= "id")
 private  Integer id;
 
-
-@Column(name ="uuid")
+@Column(insertable=false, updatable=false)
+//@Column(name ="uuid")
 private String uuid;
 
 

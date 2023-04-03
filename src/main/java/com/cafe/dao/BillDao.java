@@ -12,7 +12,7 @@ samuelkawuma
 10:20:55 AM
 Apr 2, 2023
 */
-public interface Billdao extends JpaRepository<Bill, Integer> {
+public interface BillDao extends JpaRepository<Bill, Integer> {
 	
 	
 	List<Bill> getAllBills();
