@@ -1,36 +1,43 @@
 package com.cafe.jwt;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.http.HttpHeaders;
+
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 /*
 samuelkawuma
 5:36:19 PM
 Apr 3, 2023
 */
+@EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 	
 	
-	
+	@Autowired
 	private  JwtFilter jwtRequestFilter;
     
 @Bean
@@ -62,25 +69,25 @@ public UserDetailsService  CustomerUserDetailService ()
     }
 
 
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
- return  http
-      .csrf()
-      .disable()
-      .authorizeHttpRequests()
-      .requestMatchers("/authenticate","/signup","/api/airport/allAirport","/user/createUser","/user/registerNewUser")
-      .permitAll() 
-      .and()
-      .authorizeHttpRequests().requestMatchers("/user/**")
-      .authenticated()
-      .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
-      .authenticationProvider(authenticationProvider())
-      .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-      
-.build();
-}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+     return  http
+          .csrf()
+          .disable()
+          .authorizeHttpRequests()
+          .requestMatchers("/user/login","/user/signup","/user/forgotPassword")
+          .permitAll() 
+          .and()
+          .authorizeHttpRequests().requestMatchers("/user/**")
+          .authenticated()
+          .and()
+          .sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+          .and()
+          .authenticationProvider(authenticationProvider())
+          .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+          
+    .build();
+    }
 
 }

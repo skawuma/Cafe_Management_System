@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 
 import com.cafe.entity.User;
+import com.cafe.wrapper.UserWrapper;
 
 import jakarta.transaction.Transactional;
 /*
@@ -19,7 +20,7 @@ public interface UserDao extends JpaRepository<User,Integer> {
 
     User findByEmailId(@Param("email") String email);
 
-   // List<UserWrapper> getAllUser();
+    List<UserWrapper> getAllUser();
 
     List<String> getAllAdmin();
 

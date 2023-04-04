@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import jakarta.servlet.FilterChain;
@@ -17,6 +18,7 @@ samuelkawuma
 5:26:34 PM
 Apr 3, 2023
 */
+@Component
 public class JwtFilter extends OncePerRequestFilter {
 
 		    @Autowired

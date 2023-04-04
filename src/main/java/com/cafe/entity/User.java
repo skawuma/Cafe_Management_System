@@ -36,7 +36,7 @@ Mar 29, 2023
 
 @NamedQuery(name = "User.findByEmailId", query = "select u from User u where u.email=:email")
 
-@NamedQuery(name = "User.getAllUser", query = "select new com.inn.cafe.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
+@NamedQuery(name = "User.getAllUser", query = "select new com.cafe.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
 
 @NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
 
@@ -60,8 +60,8 @@ public class User implements Serializable, UserDetails {
 	@Column(name= "userName")
 	private String userName;
 	
-	@Column(name= "UserPassword")
-	private String UserPassword;
+	@Column(name= "password")
+	private String password;
 	
 	@Column(name ="name")
 	private String name;
@@ -71,6 +71,9 @@ public class User implements Serializable, UserDetails {
 	
 	@Column(name ="email")
 	private String email;
+	
+	@Column(name ="status")
+	private String status;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
@@ -116,7 +119,7 @@ public class User implements Serializable, UserDetails {
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return UserPassword;
+		return password;
 	}
 
 	@Override

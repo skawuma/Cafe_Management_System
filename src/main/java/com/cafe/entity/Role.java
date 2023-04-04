@@ -12,7 +12,7 @@ Apr 3, 2023
 
 
 @Entity
-@Table(name = "Role_tbr")
+@Table(name = "role")
 public class Role {
 	
 	@Id
