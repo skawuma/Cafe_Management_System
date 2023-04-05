@@ -60,14 +60,22 @@ public class BillRestImpl implements BillRest {
 
 	@Override
 	public ResponseEntity<byte[]> getPdf(Map<String, Object> requestMap) {
-		// TODO Auto-generated method stub
+		 try {
+	            return billService.getPdf(requestMap);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
 		return null;
 	}
 
 	@Override
 	public ResponseEntity<String> deleteBill(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        try {
+            return billService.deleteBill(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
