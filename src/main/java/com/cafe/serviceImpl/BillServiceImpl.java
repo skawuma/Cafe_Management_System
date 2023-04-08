@@ -2,42 +2,32 @@ package com.cafe.serviceImpl;
 
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.cafe.constants.CafeConstants;
 import com.cafe.dao.BillDao;
 import com.cafe.entity.Bill;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.service.BillService;
 import com.cafe.utils.CafeUtils;
-
 import lombok.extern.slf4j.Slf4j;
-
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import org.apache.pdfbox.io.IOUtils;
 import org.json.JSONArray;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.http.HttpStatus;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /*
@@ -120,6 +110,8 @@ public class BillServiceImpl implements BillService {
 	
 	
 	private boolean validateRequestMap(Map<String, Object> requestMap) {
+		
+		
         return requestMap.containsKey("name") &&
                 requestMap.containsKey("contactNumber") &&
                 requestMap.containsKey("email") &&
@@ -130,12 +122,10 @@ public class BillServiceImpl implements BillService {
 	
 	
 	private void insertBill(Map<String, Object> requestMap) {
+		
+		
         try {
             Bill bill = new Bill();
-           
-            
-
-          
             bill.setUuid((String) requestMap.get("uuid"));
             bill.setName((String) requestMap.get("name"));
             bill.setEmail((String) requestMap.get("email"));
@@ -143,7 +133,7 @@ public class BillServiceImpl implements BillService {
             bill.setPaymentMethod((String) requestMap.get("paymentMethod"));
             bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
             bill.setProductDetail((String) requestMap.get("productDetails"));
-           // bill.setCreatedBy(jwtFilter.getCurrentUser());
+            bill.setCreatedBy(jwtFilter.getCurrentUser());
             billDao.save(bill);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -188,6 +178,7 @@ public class BillServiceImpl implements BillService {
     }
 	
 	private Font getFont(String type) {
+		
        log.info("Inside getFont");
         switch (type) {
             case "Header":
@@ -203,8 +194,6 @@ public class BillServiceImpl implements BillService {
         }
     }
 
-
-
 	@Override
 	public ResponseEntity<List<Bill>> getBills() {
 		
@@ -217,12 +206,6 @@ public class BillServiceImpl implements BillService {
         return new ResponseEntity<>(list, HttpStatus.OK);
         
 	}
-
-
-
-
-
-
 	@Override
 	public ResponseEntity<byte[]> getPdf(Map<String, Object> requestMap) {
 	    log.info("Inside getPdf : requestMap {}", requestMap);
@@ -246,8 +229,6 @@ public class BillServiceImpl implements BillService {
 		return null;
 	}
 	
-	
-
     private byte[] getByteArray(String filePath) throws Exception {
         File initialFile = new File(filePath);
         InputStream targetStream = new FileInputStream(initialFile);
@@ -255,10 +236,6 @@ public class BillServiceImpl implements BillService {
         targetStream.close();
         return byteArray;
     }
-
-
-
-
 
 
 	@Override
