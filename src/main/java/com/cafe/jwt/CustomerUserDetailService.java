@@ -33,6 +33,8 @@ public class CustomerUserDetailService implements UserDetailsService {
 	@Autowired
 	UserDao userDao;
 	
+	private User userDetail;
+	
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,4 +58,12 @@ public class CustomerUserDetailService implements UserDetailsService {
         });
         return authorities;
     }
+
+	public User getUserDetail() {
+		
+		return userDetail;
+	}
+    
+    
+    
 }

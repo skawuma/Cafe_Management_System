@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import io.jsonwebtoken.io.Decoder;
@@ -22,6 +23,8 @@ Apr 3, 2023
 */
 
 import org.springframework.stereotype.Service;
+
+import com.cafe.entity.Role;
 
 @Service
 public class JwtUtil {
@@ -62,8 +65,9 @@ public class JwtUtil {
 	    }
 
 
-	    public String generateToken(String userName){
+	    public String generateToken(String userName, Set<Role> role){
 	        Map<String,Object> claims=new HashMap<>();
+	        claims.put("role", role);
 	        return createToken(claims,userName);
 	    }
 

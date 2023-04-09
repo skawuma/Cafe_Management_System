@@ -6,6 +6,9 @@ package com.cafe.jwt;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +42,17 @@ public class SecurityConfig {
 	
 	@Autowired
 	private  JwtFilter jwtRequestFilter;
-    
-@Bean
+	
+	
+	
+    @Bean
+    public JavaMailSender javaMailSender() {
+        return new JavaMailSenderImpl();
+    }
 
+
+@Primary    
+@Bean
 public UserDetailsService  CustomerUserDetailService ()
 {
 
