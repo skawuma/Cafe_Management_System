@@ -27,6 +27,7 @@ import com.cafe.entity.User;
 import com.cafe.jwt.CustomerUserDetailService;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.jwt.JwtUtil;
+import com.cafe.service.RoleService;
 import com.cafe.service.UserService;
 import com.cafe.utils.CafeUtils;
 import com.cafe.utils.EmailUtils;
@@ -46,7 +47,7 @@ Apr 9, 2023
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	RoleDao roleDao;
+	RoleService roleService;
 	
 	@Autowired
 	UserDao userDao;
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        Role role = roleDao.findById("User").get();
+        Role role =roleService.findById("User").get();
         Set<Role>userRoles = new HashSet<>();
         userRoles.add(role);
         user.setName(requestMap.get("name"));
@@ -117,23 +118,25 @@ public class UserServiceImpl implements UserService {
     }
     
     
+    @Override
     public void initRoleAndUser(){
     	Role adminRole = new Role();
     	adminRole.setRoleName("Admin");
     	adminRole.setRoleDescription("Admin role");
-    	roleDao.save(adminRole);
+    	roleService.createNewRole(adminRole);
     	Role userRole = new Role();
     	userRole.setRoleName("User");
     	userRole.setRoleDescription("Default role for newly created record");
-    	roleDao.save(userRole);
+    	roleService.createNewRole(userRole);
 
 
     	User adminUser = new User();
         adminUser.setId((1111));
     	adminUser.setUserName("admin123"); 
     	adminUser.setPassword(getEncodedPassword("admin@pass"));
-    	adminUser.setEmail("admin@gmail.com");
-    	adminUser.setContactNumber("99999");
+    	adminUser.setName("Administrator");
+        adminUser.setContactNumber("99999");
+        adminUser.setEmail("admin@gmail.com");
     	adminUser.setStatus("true");
     	Set<Role> adminRoles = new HashSet<>();
     	adminRoles.add(adminRole);
@@ -145,8 +148,9 @@ public class UserServiceImpl implements UserService {
         user.setId((1010));
     	user.setUserName("ska"); 
     	user.setPassword(getEncodedPassword("ska@pass"));
-    	user.setEmail("ska@gmail.com");
+    	user.setName("SamuelKawuma");
     	user.setContactNumber("989898");
+    	user.setEmail("ska@gmail.com");
     	user.setStatus("true");
     	Set<Role> userRoles = new HashSet<>();
     	userRoles.add(userRole);
@@ -154,6 +158,8 @@ public class UserServiceImpl implements UserService {
     	userDao.save(user); 
 
     	}
+    
+    
     	public String getEncodedPassword( String password){
     		return passwordEncoder.encode(password);
 

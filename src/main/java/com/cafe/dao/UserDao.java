@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 
 import com.cafe.entity.User;
@@ -15,6 +16,7 @@ samuelkawuma
 4:16:53 PM
 Apr 3, 2023
 */
+@EnableJpaRepositories
 public interface UserDao extends JpaRepository<User,Integer> {
 
 

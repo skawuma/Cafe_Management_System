@@ -48,9 +48,9 @@ Mar 29, 2023
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "user")
-public class User implements Serializable, UserDetails {
+public class User implements  UserDetails {
 
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
