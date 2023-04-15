@@ -1,6 +1,7 @@
 package com.cafe.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -48,9 +49,9 @@ Mar 29, 2023
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "user")
-public class User implements  UserDetails {
+public class User implements  Serializable, UserDetails {
 
-	//private static final long serialVersionUID = 1L;
+ private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,7 +91,7 @@ public class User implements  UserDetails {
 	
 	
 	
-	
+
 	public String getUserName() {
 		return userName;
 	}

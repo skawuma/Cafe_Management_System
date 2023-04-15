@@ -14,14 +14,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cafe.constants.CafeConstants;
 import com.cafe.dao.RoleDao;
 import com.cafe.dao.UserDao;
+import com.cafe.entity.JwtRequest;
+import com.cafe.entity.JwtResponse;
 import com.cafe.entity.Role;
 import com.cafe.entity.User;
 import com.cafe.jwt.CustomerUserDetailService;
@@ -47,6 +52,8 @@ Apr 9, 2023
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
+	RoleDao roleDao;
+	
 	RoleService roleService;
 	
 	@Autowired
@@ -123,11 +130,11 @@ public class UserServiceImpl implements UserService {
     	Role adminRole = new Role();
     	adminRole.setRoleName("Admin");
     	adminRole.setRoleDescription("Admin role");
-    	roleService.createNewRole(adminRole);
+    	roleDao.save(adminRole);
     	Role userRole = new Role();
     	userRole.setRoleName("User");
     	userRole.setRoleDescription("Default role for newly created record");
-    	roleService.createNewRole(userRole);
+    	roleDao.save(userRole);
 
 
     	User adminUser = new User();
@@ -176,12 +183,18 @@ public class UserServiceImpl implements UserService {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
             );
+            
+            
             if (auth.isAuthenticated()) {
+            	UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(requestMap.get("email"));
+            	
                 if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     return new ResponseEntity<String>("{\"token\":\"" +
-                            jwtUtil.generateToken(customerUsersDetailsService.getUserDetail().getEmail(),
-                                    customerUsersDetailsService.getUserDetail().getRole()) + "\"}",
+                    		 jwtUtil.generateToken1(userDetails) + "\"}",
+//                            jwtUtil.generateToken1(customerUsersDetailsService.getUserDetail().getEmail(),
+//                                    customerUsersDetailsService.getUserDetail().getRole()) + "\"}",
                             HttpStatus.OK);
+                
                 } else {
                     return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
                             HttpStatus.BAD_REQUEST);
@@ -194,6 +207,21 @@ public class UserServiceImpl implements UserService {
                 HttpStatus.BAD_REQUEST);
     }
 
+	
+
+    private void authenticate(String email, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
+	
+	
+	
 	@Override
 	public ResponseEntity<List<UserWrapper>> getAllUser() {
 		try {
@@ -279,6 +307,19 @@ public class UserServiceImpl implements UserService {
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+	@Override
+	public JwtResponse createJwtToken(JwtRequest jwtRequest)throws Exception {
+	    String email = jwtRequest.getEmail();
+        String password = jwtRequest.getPassword();
+        authenticate(email, password);
+
+        UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(email);
+        String newGeneratedToken = jwtUtil.generateToken1(userDetails);
+
+        User user = userDao.findByEmailId1(email).get();
+        return new JwtResponse(user, newGeneratedToken);
+	}
 	}
 
 

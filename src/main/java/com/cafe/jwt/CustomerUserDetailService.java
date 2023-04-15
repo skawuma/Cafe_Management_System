@@ -1,11 +1,13 @@
 package com.cafe.jwt;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,10 +32,18 @@ Apr 3, 2023
 public class CustomerUserDetailService implements UserDetailsService {
 	
 	
-	@Autowired
-	UserDao userDao;
 	
-	private User userDetail;
+	@Autowired
+	UserDao  userDao;
+
+	
+	//private com.cafe.entity.
+	
+	
+
+	
+	private  com.cafe.entity.User userDetail;
+	
 	
 
     @Override
@@ -42,9 +52,11 @@ public class CustomerUserDetailService implements UserDetailsService {
     	User user = userDao.findByEmailId(username);
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
+            		
+                    user.getEmail(),
                     user.getPassword(),
                     getAuthority(user)
+                    
             );
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
@@ -59,11 +71,15 @@ public class CustomerUserDetailService implements UserDetailsService {
         return authorities;
     }
 
-	public User getUserDetail() {
-		
+	public com.cafe.entity.User getUserDetail() {
 		return userDetail;
 	}
-    
+
+//	public com.cafe.entity.User getUserDetail() {
+//		
+//		return userDetail;
+//	}
+//    
     
     
 }

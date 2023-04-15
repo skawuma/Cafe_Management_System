@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cafe.entity.JwtRequest;
+import com.cafe.entity.JwtResponse;
 import com.cafe.wrapper.UserWrapper;
 
 import jakarta.annotation.PostConstruct;
-
+@RestController
 @RequestMapping(path = "/user")
 public interface UserRest {
 	
@@ -24,7 +28,7 @@ public interface UserRest {
 	@PostMapping(path = "/signup")
     public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @PostMapping(path = "/login")
+    @PostMapping(path = "/login1")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/get")
@@ -42,7 +46,9 @@ public interface UserRest {
     @PostMapping(path = "/forgotPassword")
     ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> requestMap);
     
-    @PostConstruct
+    @PostMapping(path ="/login")
+    public JwtResponse createJwtToken(@RequestBody JwtRequest jwtRequest);
+  
     public void  intitRoleAndUser();
 
 }

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.cafe.entity.JwtRequest;
+import com.cafe.entity.JwtResponse;
 import com.cafe.wrapper.UserWrapper;
 
 /*
@@ -29,5 +31,7 @@ public interface UserService {
 	ResponseEntity<String> forgotPassword(Map<String, String> requestMap);
 
 	public void initRoleAndUser();
+
+	public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception;
 
 }
