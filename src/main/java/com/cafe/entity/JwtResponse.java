@@ -12,7 +12,7 @@ Apr 14, 2023
 */
 @Data
 @Builder
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class JwtResponse {
 	

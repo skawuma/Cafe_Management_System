@@ -6,16 +6,22 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {trigger,state,style,animate,transition}from '@angular/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BestsellerComponent } from './bestseller/bestseller.component';
+
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/shared/material.module';
 import { SharedModule } from 'src/shared/shared.module';
+import { BestSellerComponent } from './best-seller/best-seller.component';
+import { HomeComponent } from './home/home.component';
+import { SignupComponent } from './signup/signup.component';
+import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BestsellerComponent
+    BestSellerComponent,
+    HomeComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +31,8 @@ import { SharedModule } from 'src/shared/shared.module';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    NgxUiLoaderModule
 
 
 

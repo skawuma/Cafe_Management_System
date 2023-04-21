@@ -14,6 +14,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ Mar 29, 2023
 @NamedQuery(name = "Bill.getAllBills", query = "select b from Bill b order by b.id desc")
 
 @NamedQuery(name = "Bill.getBillByUserName", query = "select b from Bill b where b.createdBy=:username order by b.id desc")
-@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @Data
