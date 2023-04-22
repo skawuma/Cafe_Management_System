@@ -15,6 +15,16 @@ import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  text: "Loading...",
+  textColor: "#FFFFFF",
+  textPosition: "center-center",
+  bgsColor: "#7b1fa2",
+  fgsColor: "#7b1fa2",
+  fgsType: SPINNER.threeStrings, // foreground spinner type
+  fgsSize: 100,
+  hasProgressBar: false
+};
 
 @NgModule({
   declarations: [
@@ -32,7 +42,7 @@ import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
     HttpClientModule,
     MaterialModule,
     SharedModule,
-    NgxUiLoaderModule
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
 
 
 
