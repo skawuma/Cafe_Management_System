@@ -26,7 +26,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /*
 samuelkawuma
@@ -43,7 +46,9 @@ Mar 29, 2023
 
 @NamedQuery(name = "User.getAllAdmin", query = "select u.email from User u where u.role='admin'")
 
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @Entity
 @DynamicUpdate
@@ -93,7 +98,7 @@ public class User implements  Serializable, UserDetails {
 	
 
 	public String getUserName() {
-		return userName;
+		return name;
 	}
 
 	public void setUserName(String userName) {
@@ -170,7 +175,7 @@ public class User implements  Serializable, UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return userName;
+		return name;
 	}
 
 	@Override

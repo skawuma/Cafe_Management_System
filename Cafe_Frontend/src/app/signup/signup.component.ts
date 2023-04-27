@@ -13,7 +13,7 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-
+  user: any;
   password = true;
   confirmPassword = true;
   signupForm: any = FormGroup;
@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
       return false;
   }
 
-  handleSubmit() {
+  handleSubmit1() {
     this.ngxService.start();
     var formData = this.signupForm.value;
     var data = {
@@ -61,6 +61,7 @@ export class SignupComponent implements OnInit {
     this.userService.signup(data).subscribe((response: any) => {
       this.ngxService.stop();
       this.dialogRef.close();
+
       this.responseMessage = response?.message;
       this.snachbarService.openSnackBar(this.responseMessage, "");
       this.router.navigate(['/']);
@@ -75,4 +76,45 @@ export class SignupComponent implements OnInit {
       this.snachbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
     });
   }
+
+
+  handleSubmit() {
+    this.ngxService.start();
+    var formData = this.signupForm.value;
+    var data = {
+      name: formData.name,
+      email: formData.email,
+      contactNumber: formData.contactNumber,
+      password: formData.password
+    }
+    this.userService.signup(data).subscribe(
+
+
+      {   
+      next:(response:any)=> {
+       
+      this.ngxService.stop();
+      this.dialogRef.close();
+      this.responseMessage = response?.message;
+      this.snachbarService.openSnackBar(this.responseMessage, "");
+      
+      this.router.navigate(['/']);
+      },
+      error: (error:any) => {
+      this.ngxService.stop();
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalConstants.genericError;
+      }
+      this.snachbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+    }
+    }
+    
+    
+    );
+  }
+
+
 }

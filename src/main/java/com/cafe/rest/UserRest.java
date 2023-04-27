@@ -8,6 +8,7 @@ Apr 1, 2023
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,15 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe.entity.JwtRequest;
 import com.cafe.entity.JwtResponse;
+import com.cafe.entity.RegisterRequest;
 import com.cafe.wrapper.UserWrapper;
 
 import jakarta.annotation.PostConstruct;
 @RestController
 @RequestMapping(path = "/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public interface UserRest {
 	
 	
-	@PostMapping(path = "/signup")
+	@PostMapping(path = "/signup1")
     public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PostMapping(path = "/login1")
@@ -50,5 +53,8 @@ public interface UserRest {
     public JwtResponse createJwtToken(@RequestBody JwtRequest jwtRequest);
   
     public void  intitRoleAndUser();
+
+    @PostMapping(path = "/signup")
+    public JwtResponse register(@RequestBody RegisterRequest request);
 
 }

@@ -27,6 +27,7 @@ import com.cafe.dao.RoleDao;
 import com.cafe.dao.UserDao;
 import com.cafe.entity.JwtRequest;
 import com.cafe.entity.JwtResponse;
+import com.cafe.entity.RegisterRequest;
 import com.cafe.entity.Role;
 import com.cafe.entity.User;
 import com.cafe.jwt.CustomerUserDetailService;
@@ -112,15 +113,22 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        Role role =roleService.findById("User").get();
-        Set<Role>userRoles = new HashSet<>();
-        userRoles.add(role);
+       // Role role =roleService.findById("User").get();
+       // Set<Role>userRoles = new HashSet<>();
+       // userRoles.add(role);
+
+       Set<Role> role = new HashSet<>();
+       Role userRole = new Role();
+       userRole.setRoleName("User");
+       roleDao.save(userRole);
+       role.add(userRole);
+
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(requestMap.get("password"));
         user.setStatus("false");
-        user.setRole(userRoles);
+        user.setRole(role);
         return user;
     }
     
@@ -320,6 +328,31 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findByEmailId1(email).get();
         return new JwtResponse(user, newGeneratedToken);
 	}
+
+    @Override
+    public JwtResponse register(RegisterRequest request) {
+        
+        User user = new User();
+
+        Role role = roleDao.findById("User").get();
+        
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(role);
+     
+        user.setRole(userRoles);
+
+        user.setName(request.getName());
+       user .setPassword (passwordEncoder.encode(request.getPassword()));
+        user.setContactNumber(request.getContactNumber());
+       user .setEmail(request.getEmail());
+    
+        
+        userDao.save(user);
+
+        String newGeneratedToken = jwtUtil.generateToken1(user);
+
+    return new JwtResponse(user, newGeneratedToken);
+    }
 	}
 
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cafe.constants.CafeConstants;
 import com.cafe.entity.JwtRequest;
 import com.cafe.entity.JwtResponse;
+import com.cafe.entity.RegisterRequest;
 import com.cafe.entity.User;
 import com.cafe.rest.UserRest;
 import com.cafe.service.UserService;
@@ -118,6 +119,17 @@ public class UserRestImpl implements UserRest {
 		try {
 			 
             return userService.createJwtToken(jwtRequest);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new JwtResponse(User, String);
+    }
+
+    @Override
+    public JwtResponse register(RegisterRequest request) {
+        try {
+			 
+            return userService.register(request);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
