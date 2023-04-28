@@ -14,6 +14,8 @@ import { BestSellerComponent } from './best-seller/best-seller.component';
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { LoginComponent } from './login/login.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   text: "Loading...",
@@ -31,7 +33,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AppComponent,
     BestSellerComponent,
     HomeComponent,
-    SignupComponent
+    SignupComponent,
+    ForgotPasswordComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
