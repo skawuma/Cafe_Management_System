@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import com.cafe.entity.JwtRequest;
 import com.cafe.entity.JwtResponse;
 import com.cafe.entity.RegisterRequest;
+import com.cafe.entity.User;
 import com.cafe.wrapper.UserWrapper;
 
 /*
@@ -35,6 +36,8 @@ public interface UserService {
 
 	public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception;
 
-    public  JwtResponse register(RegisterRequest request);
+    // public  JwtResponse register(RegisterRequest request);
+
+	public Iterable<User> displayAllUsers();
 
 }

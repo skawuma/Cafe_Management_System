@@ -8,6 +8,8 @@ Apr 1, 2023
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,23 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cafe.entity.JwtRequest;
 import com.cafe.entity.JwtResponse;
 import com.cafe.entity.RegisterRequest;
+import com.cafe.entity.User;
 import com.cafe.wrapper.UserWrapper;
 
 import jakarta.annotation.PostConstruct;
-@RestController
+// @RestController
 @RequestMapping(path = "/user")
 @CrossOrigin(origins = "http://localhost:4200")
+
 public interface UserRest {
 	
 	
-	@PostMapping(path = "/signup1")
+	@PostMapping(path = "/signup")
     public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
     @PostMapping(path = "/login1")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
+  @PreAuthorize("hasRole('Admin')")
     @GetMapping(path = "/get")
     public ResponseEntity<List<UserWrapper>> getAllUser();
+
+
+     @PreAuthorize("hasRole('Admin')")
+    @GetMapping("/getall")
+	public Iterable<User> readAllUsers();
 
     @PutMapping(path = "/update")
     public ResponseEntity<String> update(@RequestBody(required = true) Map<String, String> requestMap);
@@ -54,7 +64,7 @@ public interface UserRest {
   
     public void  intitRoleAndUser();
 
-    @PostMapping(path = "/signup")
-    public JwtResponse register(@RequestBody RegisterRequest request);
+    // @PostMapping(path = "/signup1")
+    // public JwtResponse register(@RequestBody RegisterRequest request);
 
 }

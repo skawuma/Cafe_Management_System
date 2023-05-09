@@ -40,6 +40,7 @@ import com.cafe.utils.EmailUtils;
 import com.cafe.wrapper.UserWrapper;
 import com.google.common.base.Strings;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -113,22 +114,24 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-       // Role role =roleService.findById("User").get();
-       // Set<Role>userRoles = new HashSet<>();
-       // userRoles.add(role);
+        Role role = roleDao.findById("User").get();
+        
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(role);
+        user.setRoles2(userRoles);
 
-       Set<Role> role = new HashSet<>();
-       Role userRole = new Role();
-       userRole.setRoleName("User");
-       roleDao.save(userRole);
-       role.add(userRole);
+    //    Set<Role> role = new HashSet<>();
+    //    Role userRole = new Role();
+    //    userRole.setRoleName("User");
+    //    roleDao.save(userRole);
+    //    role.add(userRole);
 
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(requestMap.get("password"));
         user.setStatus("false");
-        user.setRole(role);
+        // user.setRole(role);
         return user;
     }
     
@@ -146,30 +149,32 @@ public class UserServiceImpl implements UserService {
 
 
     	User adminUser = new User();
-        adminUser.setId((1111));
+        adminUser.setId((1));
     	adminUser.setUserName("admin123"); 
     	adminUser.setPassword(getEncodedPassword("admin@pass"));
     	adminUser.setName("Administrator");
         adminUser.setContactNumber("99999");
         adminUser.setEmail("admin@gmail.com");
     	adminUser.setStatus("true");
+        adminUser.setRole("Admin");
     	Set<Role> adminRoles = new HashSet<>();
     	adminRoles.add(adminRole);
-    	adminUser.setRole(adminRoles);
+    	adminUser.setRoles2(adminRoles);
     	userDao.save(adminUser);
 
 
     	User user = new User();
-        user.setId((1010));
+        user.setId((2));
     	user.setUserName("ska"); 
     	user.setPassword(getEncodedPassword("ska@pass"));
     	user.setName("SamuelKawuma");
     	user.setContactNumber("989898");
     	user.setEmail("ska@gmail.com");
     	user.setStatus("true");
+        user.setRole("User");
     	Set<Role> userRoles = new HashSet<>();
     	userRoles.add(userRole);
-    	user.setRole(userRoles);
+    	user.setRoles2(userRoles);
     	userDao.save(user); 
 
     	}
@@ -185,24 +190,20 @@ public class UserServiceImpl implements UserService {
     
 
 	@Override
-	public ResponseEntity<String> login(Map<String, String> requestMap) {
-		log.info("Inside login");
+    public ResponseEntity<String> login(Map<String, String> requestMap) {
+        log.info("Inside login");
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
             );
-            
-            
             if (auth.isAuthenticated()) {
-            	UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(requestMap.get("email"));
-            	
-                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                 User user = new User();
+                if (user.getStatus().equalsIgnoreCase("true")) {
+                   
+                    UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(user.getEmail());
                     return new ResponseEntity<String>("{\"token\":\"" +
-                    		 jwtUtil.generateToken1(userDetails) + "\"}",
-//                            jwtUtil.generateToken1(customerUsersDetailsService.getUserDetail().getEmail(),
-//                                    customerUsersDetailsService.getUserDetail().getRole()) + "\"}",
+                            jwtUtil.generateToken2(userDetails) + "\"}",
                             HttpStatus.OK);
-                
                 } else {
                     return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
                             HttpStatus.BAD_REQUEST);
@@ -215,29 +216,78 @@ public class UserServiceImpl implements UserService {
                 HttpStatus.BAD_REQUEST);
     }
 
+
+
+
+    // @Override
+    // public ResponseEntity<String> login(Map<String, String> requestMap) {
+    //     log.info("Inside login");
+    //     try {
+    //         User user = new User();
+    //          user = userDao.findByEmailId1(user.getEmail()).get();
+    //        // String email = user.getEmail();
+    //         //String password = user.getPassword();
+    //         Authentication auth = authenticationManager.authenticate(
+    //                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+    //         );
+    //         if (auth.isAuthenticated()) {
+
+               
+    //             Role role = roleDao.findById("Admin").get();
+    //            Role role1 = roleDao.findById("User").get();
+    //           String roleDuty= user.getRoles();
+     
+    //            Set<Role> userRoles = new HashSet<>();
+    //           if(user.getEmail().contains("admin@gmail.com")) {
+    //           userRoles.add(role);
+    //            user.setRoles(roleDuty);
+    //            }else{ 
+    //             userRoles.add(role1);
+    //            user.setRoles(roleDuty);
+    //     }
+    //          user.setRole(userRoles);
+            
+     
+    //         userDao.save(user);
+
+    //             if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+    //                 UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(user.getEmail());
+
+
+    //                 return new ResponseEntity<String>("{\"token\":\"" +
+    //                         jwtUtil.generateToken2(userDetails) + "\"}",
+    //                         HttpStatus.OK);
+    //             } else {
+    //                 return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
+    //                         HttpStatus.BAD_REQUEST);
+    //             }
+    //         }
+    //     } catch (Exception ex) {
+    //         log.error("{}", ex);
+    //     }
+    //     return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}",
+    //             HttpStatus.BAD_REQUEST);
+    // }
+
 	
 
-    private void authenticate(String email, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
+   
 
 	
 	
-	
+	@Transactional
 	@Override
 	public ResponseEntity<List<UserWrapper>> getAllUser() {
+
 		try {
-            if (jwtFilter.isAdmin()) {
+        //    if (jwtFilter.isAdmin()) {
+            
                 return new ResponseEntity<>(userDao.getAllUser(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            }
+          //  }
+            
+            //  else {
+            //     return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            // }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -247,7 +297,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseEntity<String> update(Map<String, String> requestMap) {
 		try {
-            if (jwtFilter.isAdmin()) {
+          //  if (jwtFilter.isAdmin()) {
                 Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
@@ -256,9 +306,9 @@ public class UserServiceImpl implements UserService {
                 } else {
                     return CafeUtils.getResponseEntity("User id doesn't not exist", HttpStatus.OK);
                 }
-            } else {
-                return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            }
+            // } else {
+            //     return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            // }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -316,42 +366,70 @@ public class UserServiceImpl implements UserService {
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    private void authenticate(String email, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
+
+
+
+
 	@Override
 	public JwtResponse createJwtToken(JwtRequest jwtRequest)throws Exception {
-	    String email = jwtRequest.getEmail();
+	   
+        User user = new User();
+        String email = jwtRequest.getEmail();
         String password = jwtRequest.getPassword();
         authenticate(email, password);
 
-        UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(email);
-        String newGeneratedToken = jwtUtil.generateToken1(userDetails);
+      
+    
+        Role role = roleDao.findById("Admin").get();
+       Role role1 = roleDao.findById("User").get();
+      // String roleDuty=  customerUsersDetailsService.getUserDetail().getRoles();
+      String roleDuty= user.getRole();
+     
+         Set<Role> userRoles = new HashSet<>();
+        
+         if( email.contains("admin@gmail.com")) {
+ 
+         userRoles.add(role);
+         user.setRole(roleDuty);
+ 
+     }else{
+         
+          userRoles.add(role1);
+          user.setRole(roleDuty);
+     }
+ 
+         user.setRoles2(userRoles);
+         
 
-        User user = userDao.findByEmailId1(email).get();
+
+       user = userDao.findByEmailId1(email).get();
+        
+         userDao.save(user);
+     UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(email);
+    
+
+     //   String newGeneratedToken = jwtUtil.generateToken2(userDetails);
+
+        String newGeneratedToken = jwtUtil.generateToken(user.getEmail(),user.getRole());
         return new JwtResponse(user, newGeneratedToken);
+        
 	}
 
+
+
     @Override
-    public JwtResponse register(RegisterRequest request) {
-        
-        User user = new User();
-
-        Role role = roleDao.findById("User").get();
-        
-        Set<Role> userRoles = new HashSet<>();
-        userRoles.add(role);
-     
-        user.setRole(userRoles);
-
-        user.setName(request.getName());
-       user .setPassword (passwordEncoder.encode(request.getPassword()));
-        user.setContactNumber(request.getContactNumber());
-       user .setEmail(request.getEmail());
-    
-        
-        userDao.save(user);
-
-        String newGeneratedToken = jwtUtil.generateToken1(user);
-
-    return new JwtResponse(user, newGeneratedToken);
+    public Iterable<User> displayAllUsers() {
+       return userDao.findAll();
     }
 	}
 

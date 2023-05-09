@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -25,6 +26,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -39,6 +43,26 @@ Apr 3, 2023
 @Configuration
 public class SecurityConfig {
 	
+
+        private static final String GET = "GET";
+    private static final String POST = "POST";
+    private static final String PUT = "PUT";
+    private static final String DELETE = "DELETE";
+
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedMethods(GET, POST, PUT, DELETE)
+                        .allowedHeaders("*")
+                        .allowedOriginPatterns("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
 	
 	@Autowired
 	private  JwtFilter jwtRequestFilter;
@@ -80,25 +104,38 @@ public UserDetailsService  CustomerUserDetailService ()
     }
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-     return  http
-          .csrf()
-          .disable()
-          .authorizeHttpRequests()
-          .requestMatchers("/user/login","/user/signup","/user/forgotPassword","/user/login1","/user/signup1")
-          .permitAll() 
-          .and()
-          .authorizeHttpRequests().requestMatchers("/user/**")
-          .authenticated()
-          .and()
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and()
-          .authenticationProvider(authenticationProvider())
-          .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-          
-    .build();
-    }
 
+
+
+
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+    .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+    //.cors()
+    .and()
+    .csrf() 
+    .disable()
+    .authorizeHttpRequests()
+
+            .requestMatchers("/user/login","/user/signup").permitAll() 
+            .requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
+            .anyRequest()
+            .authenticated()
+            .and()
+            .exceptionHandling()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+}
+
+
+
+
+
+    
 }

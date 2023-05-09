@@ -125,15 +125,20 @@ public class UserRestImpl implements UserRest {
         return new JwtResponse(User, String);
     }
 
-    @Override
-    public JwtResponse register(RegisterRequest request) {
-        try {
+    // @Override
+    // public JwtResponse register(RegisterRequest request) {
+    //     try {
 			 
-            return userService.register(request);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return new JwtResponse(User, String);
+    //         return userService.register(request);
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //     }
+    //     return new JwtResponse(User, String);
+    // }
+
+    @Override
+    public Iterable<User> readAllUsers() {
+        return userService.displayAllUsers();
     }
 		
 	

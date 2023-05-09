@@ -40,7 +40,7 @@ Mar 29, 2023
 
 @NamedQuery(name = "User.findByEmailId", query = "select u from User u where u.email=:email")
 
-@NamedQuery(name = "User.getAllUser", query = "select new com.cafe.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role='user'")
+@NamedQuery(name = "User.getAllUser", query = "select new com.cafe.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status) from User u where u.role =  'user'")
 
 @NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
 
@@ -54,12 +54,12 @@ Mar 29, 2023
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "user")
-public class User implements  Serializable, UserDetails {
+public class User implements  UserDetails {
 
- private static final long serialVersionUID = 1L;
+// private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name= "id")
 	private  Integer id;
 	
@@ -80,25 +80,37 @@ public class User implements  Serializable, UserDetails {
 	
 	@Column(name ="status")
 	private String status;
+
+	
+
+
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
             joinColumns = {
-                    @JoinColumn(name = "USER_ID")
+                    @JoinColumn(name = "USER_ID",referencedColumnName="id")
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "ROLE_ID")
             }
     )
-	private  Set<Role> role;
+	private  Set<Role> roles2;
 
+	private String role;
 	
 	
-	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		
+		this.role = role;
+	}
 	
 
 	public String getUserName() {
-		return name;
+		return email;
 	}
 
 	public void setUserName(String userName) {
@@ -149,20 +161,20 @@ public class User implements  Serializable, UserDetails {
 		this.id = id;
 	}
 
-	public Set<Role> getRole() {
-		return role;
+	public Set<Role> getRoles2() {
+		return roles2;
 	}
 
-	public void setRole(Set<Role> role) {
-		this.role = role;
+	public void setRoles2(Set<Role> roles2) {
+		this.roles2 = roles2;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (CollectionUtils.isEmpty(role)) {
+		if (CollectionUtils.isEmpty(roles2)) {
             return Collections.emptyList();
         }
-        return role.stream().map(role ->
+        return roles2.stream().map(role ->
                 new SimpleGrantedAuthority(role.toString())).collect(Collectors.toList());
     }
 
@@ -175,7 +187,7 @@ public class User implements  Serializable, UserDetails {
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return name;
+		return email;
 	}
 
 	@Override
@@ -200,6 +212,9 @@ public class User implements  Serializable, UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public User(String email2, String password2, Object object) {
 	}
 	
 }

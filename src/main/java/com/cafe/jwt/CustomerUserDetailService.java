@@ -1,13 +1,12 @@
 package com.cafe.jwt;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Objects;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,8 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.cafe.dao.UserDao;
+
 import com.cafe.entity.User;
-import java. util.Optional;
+
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,18 +37,23 @@ public class CustomerUserDetailService implements UserDetailsService {
 	UserDao  userDao;
 
 	
-	//private com.cafe.entity.
+	
 	
 	
 
 	
 	private  com.cafe.entity.User userDetail;
+    //private com.cafe.entity.Role roleDetail;
 	
 	
 
+
+
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ///modify toUsers user = userRepo.findByUserName(username).get();
+       
     	User user = userDao.findByEmailId(username);
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(
@@ -65,7 +70,7 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     private Set getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRole().forEach(role -> {
+        user.getRoles2().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
         });
         return authorities;
@@ -75,11 +80,11 @@ public class CustomerUserDetailService implements UserDetailsService {
 		return userDetail;
 	}
 
-//	public com.cafe.entity.User getUserDetail() {
-//		
-//		return userDetail;
-//	}
-//    
-    
+
+  
+
+
+
+
     
 }

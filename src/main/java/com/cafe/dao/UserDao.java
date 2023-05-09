@@ -18,7 +18,7 @@ samuelkawuma
 4:16:53 PM
 Apr 3, 2023
 */
-@Repository
+
 public interface UserDao extends JpaRepository<User,Integer> {
 
 

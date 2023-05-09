@@ -1,5 +1,7 @@
 package com.cafe.entity;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,5 +43,10 @@ public class JwtResponse {
 	public void setJwtToken(String jwtToken) {
 		this.jwtToken = jwtToken;
 	}
+
+    public  JwtResponse(HttpStatus internalServerError) {
+		
+
+    }
 
 }

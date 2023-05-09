@@ -5,6 +5,10 @@ samuelkawuma
 Apr 3, 2023
 */
 
+import java.util.Set;
+
+import com.cafe.entity.Role;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +27,17 @@ public class UserWrapper {
 	
 	private String status;
 
+	
+
 	public UserWrapper(Integer id, String name, String email, String contactNumber, String status) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.contactNumber = contactNumber;
 		this.status = status;
+	
 	}
+
+
 
 }
