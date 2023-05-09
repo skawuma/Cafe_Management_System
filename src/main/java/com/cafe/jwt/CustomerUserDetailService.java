@@ -30,25 +30,13 @@ Apr 3, 2023
 @Slf4j
 @Service
 public class CustomerUserDetailService implements UserDetailsService {
-	
-	
-	
+		
 	@Autowired
 	UserDao  userDao;
 
 	
-	
-	
-	
-
-	
 	private  com.cafe.entity.User userDetail;
     //private com.cafe.entity.Role roleDetail;
-	
-	
-
-
-
 
 
     @Override

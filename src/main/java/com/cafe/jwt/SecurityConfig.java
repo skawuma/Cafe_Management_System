@@ -1,8 +1,4 @@
 package com.cafe.jwt;
-
-
-
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +40,7 @@ Apr 3, 2023
 public class SecurityConfig {
 	
 
-        private static final String GET = "GET";
+     private static final String GET = "GET";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
     private static final String DELETE = "DELETE";

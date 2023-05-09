@@ -96,6 +96,7 @@ public class User implements  UserDetails {
     )
 	private  Set<Role> roles2;
 
+
 	private String role;
 	
 	
@@ -108,7 +109,6 @@ public class User implements  UserDetails {
 		this.role = role;
 	}
 	
-
 	public String getUserName() {
 		return email;
 	}
