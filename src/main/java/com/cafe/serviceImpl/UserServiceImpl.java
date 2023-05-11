@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(requestMap.get("password"));
+        user.setRole("User");
         user.setStatus("false");
         // user.setRole(role);
         return user;
@@ -148,11 +149,13 @@ public class UserServiceImpl implements UserService {
     	roleDao.save(userRole);
 
 
-    	User adminUser = new User();
+ 
+
+        User adminUser = new User();
         adminUser.setId((1));
     	adminUser.setUserName("admin123"); 
     	adminUser.setPassword(getEncodedPassword("admin@pass"));
-    	adminUser.setName("Administrator");
+    	adminUser.setName("Administrator1");
         adminUser.setContactNumber("99999");
         adminUser.setEmail("admin@gmail.com");
     	adminUser.setStatus("true");
@@ -176,6 +179,52 @@ public class UserServiceImpl implements UserService {
     	userRoles.add(userRole);
     	user.setRoles2(userRoles);
     	userDao.save(user); 
+
+
+        User user1 = new User();
+        user1.setId((3));
+    	user1.setUserName("dka"); 
+    	user1.setPassword(getEncodedPassword("123"));
+    	user1.setName("Deborah Katimbo");
+    	user1.setContactNumber("9784949594");
+    	user1.setEmail("cynthiamuganzi@gmail.com");
+    	user1.setStatus("true");
+        user1.setRole("User");
+    	Set<Role> userRoles1 = new HashSet<>();
+    	userRoles1.add(userRole);
+    	user.setRoles2(userRoles1);
+    	userDao.save(user1); 
+
+
+        User user2 = new User();
+        user2.setId((4));
+    	user2.setUserName("christo"); 
+    	user2.setPassword(getEncodedPassword("321"));
+    	user2.setName("Christopher Kawuma");
+    	user2.setContactNumber("9783982410");
+    	user2.setEmail("christokawuma69@gmail.com");
+    	user2.setStatus("true");
+        user2.setRole("User");
+    	Set<Role> userRoles2 = new HashSet<>();
+    	userRoles2.add(userRole);
+    	user.setRoles2(userRoles2);
+    	userDao.save(user2); 
+
+
+
+        User adminUser1 = new User();
+        adminUser1.setId((5));
+    	adminUser1.setUserName("admin321"); 
+    	adminUser1.setPassword(getEncodedPassword("admin@pass123"));
+    	adminUser1.setName("Administrator2");
+        adminUser1.setContactNumber("98787874");
+        adminUser1.setEmail("admin@mailinator.com");
+    	adminUser1.setStatus("true");
+        adminUser1.setRole("Admin2");
+    	Set<Role> adminRoles1 = new HashSet<>();
+    	adminRoles1.add(adminRole);
+    	adminUser1.setRoles2(adminRoles1);
+    	userDao.save(adminUser1);
 
     	}
     
@@ -315,7 +364,7 @@ public class UserServiceImpl implements UserService {
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-	
+	 
 	
 	
 	
@@ -337,7 +386,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
 		try {
-            User userObj = userDao.findByEmail(jwtFilter.getCurrentUser());
+            // User userObj =new User();
+            //      userObj = userDao.findByEmailId1(userObj.getEmail()).get();
+              User userObj = userDao.findByEmail(jwtFilter.getCurrentUser());
             if (!userObj.equals(null)) {
                 if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
                     userObj.setPassword(requestMap.get("newPassword"));

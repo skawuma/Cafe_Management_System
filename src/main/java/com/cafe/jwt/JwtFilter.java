@@ -97,7 +97,7 @@ RoleDao roleDao;
 		    
 			@Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-       if(request.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup|/user/login1")
+       if(request.getServletPath().matches("/user/login|/user/forgotPassword|/user/signup")
 	   
 	   )
 	   {

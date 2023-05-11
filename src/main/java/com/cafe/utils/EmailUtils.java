@@ -19,7 +19,7 @@ Apr 9, 2023
 @Component
 public class EmailUtils {
 	
-	@Autowired(required= true)
+	@Autowired
 	private JavaMailSender emailSender;
 
 	public void sendSimpleMessage(String  to, String subject, String text, List<String> list) {

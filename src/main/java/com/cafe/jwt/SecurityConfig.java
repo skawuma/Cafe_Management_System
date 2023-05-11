@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+// import org.springframework.mail.javamail.JavaMailSender;
+// import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +26,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+// import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,10 +65,10 @@ public class SecurityConfig {
 	
 	
 	
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
-    }
+    // @Bean
+    // public JavaMailSender javaMailSender() {
+    //     return new JavaMailSenderImpl();
+    // }
 
 
 @Primary    
@@ -114,7 +114,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     .disable()
     .authorizeHttpRequests()
 
-            .requestMatchers("/user/login","/user/signup").permitAll() 
+            .requestMatchers("/user/login","/user/signup","/user/forgotPassword").permitAll() 
             .requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
             .anyRequest()
             .authenticated()
