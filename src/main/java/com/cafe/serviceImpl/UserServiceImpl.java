@@ -1,12 +1,17 @@
 package com.cafe.serviceImpl;
 
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +86,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+    private static final String ALGO = "AES";
+private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 	
 	 static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringApplication.class);
 
@@ -220,7 +229,7 @@ public class UserServiceImpl implements UserService {
         adminUser1.setContactNumber("98787874");
         adminUser1.setEmail("admin@mailinator.com");
     	adminUser1.setStatus("true");
-        adminUser1.setRole("Admin2");
+        adminUser1.setRole("Admin");
     	Set<Role> adminRoles1 = new HashSet<>();
     	adminRoles1.add(adminRole);
     	adminUser1.setRoles2(adminRoles1);
@@ -427,6 +436,59 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+ * Encrypt a string using AES encryption algorithm.
+ *
+ * @param pwd the password to be encrypted
+ * @return the encrypted string
+ */
+public static String encrypt(String pwd) {
+    String encodedPwd = "";
+    try {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance(ALGO);
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = c.doFinal(pwd.getBytes());
+        encodedPwd = Base64.getEncoder().encodeToString(encVal);
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+    }
+    return encodedPwd;
+
+}
+
+
+    /**
+ * Decrypt a string with AES encryption algorithm.
+ *
+ * @param encryptedData the data to be decrypted
+ * @return the decrypted string
+ */
+public static String decrypt(String encryptedData) {
+    String decodedPWD = "";
+    try {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance(ALGO);
+        c.init(Cipher.DECRYPT_MODE, key);
+        byte[] decordedValue = Base64.getDecoder().decode(encryptedData);
+        byte[] decValue = c.doFinal(decordedValue);
+        decodedPWD = new String(decValue);
+
+    } catch (Exception e) {
+
+    }
+    return decodedPWD;
+}
+
+/**
+ * Generate a new encryption key.
+ */
+private static Key generateKey() {
+    SecretKeySpec key = new SecretKeySpec(keyValue, ALGO);
+    return key;
+}
 
 
 
@@ -448,7 +510,7 @@ public class UserServiceImpl implements UserService {
      
          Set<Role> userRoles = new HashSet<>();
         
-         if( email.contains("admin@gmail.com")) {
+         if( email.contains("admin")) {
  
          userRoles.add(role);
          user.setRole(roleDuty);
