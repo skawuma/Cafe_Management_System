@@ -23,6 +23,11 @@ export class HomeComponent implements OnInit {
       this.dialog.open(SignupComponent, dialogConfig);
     }
   ngOnInit(): void {
+    this.userServices.checkToken().subscribe((response: any) => {
+      this.router.navigate(['/cafe/dashboard']);
+    }, (error: any) => {
+      console.log(error);
+    })
   }
 
   forgotPasswordAction() {
