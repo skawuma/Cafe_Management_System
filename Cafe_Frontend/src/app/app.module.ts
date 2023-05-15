@@ -17,6 +17,17 @@ import { NgxUiLoaderConfig, NgxUiLoaderModule, SPINNER } from 'ngx-ui-loader';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { FullComponent } from './layouts/full/full.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { TokenInterceptorService } from './services/token-interceptor.interceptor';
+import { ChangePasswordComponent } from './material-component/dialog/change-password/change-password.component';
+import { AppHeaderComponent } from './layouts/full/header/header.component';
+import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MenuItems } from 'src/shared/menu-items';
+
 //import { FlexLayoutModule } from '@angular/flex-layout';
 
 
@@ -39,10 +50,14 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BestSellerComponent,
     HomeComponent,
     SignupComponent,
-    
+    ChangePasswordComponent,
+    AppHeaderComponent,
+    AppSidebarComponent,
     ForgotPasswordComponent,
     LoginComponent,
     FullComponent
+    
+   
   ],
   imports: [
     BrowserModule,
@@ -51,7 +66,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    
+    MatToolbarModule,
+MatButtonModule,
+MatCheckboxModule,
+MatListModule,
+
+  
     MaterialModule,
     SharedModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
@@ -59,7 +79,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
 
   ],
-  providers: [],
+  providers: [HttpClientModule, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

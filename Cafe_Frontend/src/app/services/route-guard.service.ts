@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { SnachbarService } from './snachbar.service';
 import { GlobalConstants } from 'src/shared/global-constants';
+import jwt_decode from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +12,18 @@ export class RouteGuardService implements CanActivate {
   constructor(public auth: AuthService, public router: Router, private snachbarService: SnachbarService) { }
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    let expectedRoleArray = route.data;
-    expectedRoleArray = expectedRoleArray['expectedRole'];
+    let expectedRoleArray:any = route.data;
+    expectedRoleArray = expectedRoleArray.expectedRole;
 
-    const token: any = localStorage.getItem('token');
+    const token: any = localStorage.getItem('jwtToken')|| 'null' ;
+
+    //const token: any = localStorage.getItem('token');
 
     // decode the token to get its payload
     var tokenPayload: any;
     try {
       tokenPayload = jwt_decode(token);
+      
     }
     catch (err) {
       localStorage.clear();
@@ -28,13 +32,13 @@ export class RouteGuardService implements CanActivate {
 
     let expectedRole = '';
 
-    for (let i = 0; i < expectedRoleArray['length']; i++) {
+    for (let i = 0; i < expectedRoleArray.length; i++) {
       if (expectedRoleArray[i] == tokenPayload.role) {
         expectedRole = tokenPayload.role;
       }
     }
 
-    if (tokenPayload.role == 'user' || tokenPayload.role == 'admin') {
+    if (tokenPayload.role == 'User' || tokenPayload.role == 'Admin') {
       if (this.auth.isAuthenticated() && tokenPayload.role == expectedRole) {
         return true;
       }
@@ -48,9 +52,7 @@ export class RouteGuardService implements CanActivate {
       return false;
     }
   }
+  
 
-}
-function jwt_decode(token: any): any {
-  throw new Error('Function not implemented.');
 }
 

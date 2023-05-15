@@ -116,6 +116,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 
             .requestMatchers("/user/login","/user/signup","/user/forgotPassword").permitAll() 
             .requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
+            // .requestMatchers(HttpMethod.GET,"/user/checkToken").hasAnyRole("Admin","User")
             .anyRequest()
             .authenticated()
             .and()
