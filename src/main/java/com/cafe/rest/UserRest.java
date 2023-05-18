@@ -35,7 +35,7 @@ public interface UserRest {
 	@PostMapping(path = "/signup")
     public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @PostMapping(path = "/login1")
+    @PostMapping(path = "/login")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
   @PreAuthorize("hasRole('Admin')")
@@ -59,7 +59,7 @@ public interface UserRest {
     @PostMapping(path = "/forgotPassword")
     ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> requestMap);
     
-    @PostMapping(path ="/login")
+    @PostMapping(path ="/login1")
     public JwtResponse createJwtToken(@RequestBody JwtRequest jwtRequest);
   
     public void  intitRoleAndUser();

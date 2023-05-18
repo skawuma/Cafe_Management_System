@@ -10,8 +10,8 @@ export class AuthService {
   constructor(private router: Router) { }
 
   public isAuthenticated(): boolean {
-   // const token = localStorage.getItem('token');
-   const token=localStorage.getItem('jwtToken')|| 'null' ;
+    const token = localStorage.getItem('token');
+   //const token=localStorage.getItem('jwtToken')|| 'null' ;
     if (!token) {
        console.log("Token does not exists");
 

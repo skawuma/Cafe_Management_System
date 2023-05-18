@@ -1,6 +1,7 @@
 package com.cafe.jwt;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -63,6 +64,25 @@ public class CustomerUserDetailService implements UserDetailsService {
         });
         return authorities;
     }
+
+
+
+
+
+    // @Override
+    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    //     log.info("Inside loadUserByUsername {}", username);
+    //     userDetail = userDao.findByEmailId(username);
+    //     if (!Objects.isNull(userDetail))
+    //         return new User(userDetail.getEmail(), userDetail.getPassword(), new ArrayList<>());
+    //     else
+    //         throw new UsernameNotFoundException("User not found.");
+    // }
+
+
+
+
+
 
 	public com.cafe.entity.User getUserDetail() {
 		return userDetail;

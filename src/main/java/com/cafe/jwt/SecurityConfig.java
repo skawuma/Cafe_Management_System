@@ -114,8 +114,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     .disable()
     .authorizeHttpRequests()
 
-            .requestMatchers("/user/login","/user/signup","/user/forgotPassword").permitAll() 
-            .requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
+            .requestMatchers("/user/login","/user/signup","/user/forgotPassword","user/login1").permitAll() 
+           //.requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
             // .requestMatchers(HttpMethod.GET,"/user/checkToken").hasAnyRole("Admin","User")
             .anyRequest()
             .authenticated()

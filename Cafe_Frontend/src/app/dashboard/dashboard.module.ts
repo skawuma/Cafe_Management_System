@@ -12,7 +12,7 @@ import { DashboardRoutes } from "./dashboard.routing";
       CommonModule,
      MaterialModule,
     //FlexLayoutModule,
-      RouterModule.forChild(DashboardRoutes)
+       RouterModule.forChild(DashboardRoutes)
     ],
     declarations: [DashboardComponent]
   })

@@ -162,7 +162,8 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 
         User adminUser = new User();
         adminUser.setId((1));
-    	adminUser.setUserName("admin123"); 
+    	adminUser.setUserName("admin123");
+       // adminUser.setPassword("admin@pass"); 
     	adminUser.setPassword(getEncodedPassword("admin@pass"));
     	adminUser.setName("Administrator1");
         adminUser.setContactNumber("99999");
@@ -201,7 +202,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         user1.setRole("User");
     	Set<Role> userRoles1 = new HashSet<>();
     	userRoles1.add(userRole);
-    	user.setRoles2(userRoles1);
+    	user1.setRoles2(userRoles1);
     	userDao.save(user1); 
 
 
@@ -216,10 +217,8 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         user2.setRole("User");
     	Set<Role> userRoles2 = new HashSet<>();
     	userRoles2.add(userRole);
-    	user.setRoles2(userRoles2);
+    	user2.setRoles2(userRoles2);
     	userDao.save(user2); 
-
-
 
         User adminUser1 = new User();
         adminUser1.setId((5));
@@ -236,102 +235,68 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
     	userDao.save(adminUser1);
 
     	}
-    
-    
+  
     	public String getEncodedPassword( String password){
     		return passwordEncoder.encode(password);
 
     	}
-    
-    
-    
-    
-
-	@Override
-    public ResponseEntity<String> login(Map<String, String> requestMap) {
-        log.info("Inside login");
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
-            );
-            if (auth.isAuthenticated()) {
-                 User user = new User();
-                if (user.getStatus().equalsIgnoreCase("true")) {
-                   
-                    UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(user.getEmail());
-                    return new ResponseEntity<String>("{\"token\":\"" +
-                            jwtUtil.generateToken2(userDetails) + "\"}",
-                            HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
-                            HttpStatus.BAD_REQUEST);
-                }
-            }
-        } catch (Exception ex) {
-            log.error("{}", ex);
-        }
-        return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}",
-                HttpStatus.BAD_REQUEST);
-    }
-
-
-
-
-    // @Override
-    // public ResponseEntity<String> login(Map<String, String> requestMap) {
-    //     log.info("Inside login");
-    //     try {
-    //         User user = new User();
-    //          user = userDao.findByEmailId1(user.getEmail()).get();
-    //        // String email = user.getEmail();
-    //         //String password = user.getPassword();
-    //         Authentication auth = authenticationManager.authenticate(
-    //                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-    //         );
-    //         if (auth.isAuthenticated()) {
-
-               
-    //             Role role = roleDao.findById("Admin").get();
-    //            Role role1 = roleDao.findById("User").get();
-    //           String roleDuty= user.getRoles();
-     
-    //            Set<Role> userRoles = new HashSet<>();
-    //           if(user.getEmail().contains("admin@gmail.com")) {
-    //           userRoles.add(role);
-    //            user.setRoles(roleDuty);
-    //            }else{ 
-    //             userRoles.add(role1);
-    //            user.setRoles(roleDuty);
-    //     }
-    //          user.setRole(userRoles);
-            
-     
-    //         userDao.save(user);
-
-    //             if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
-    //                 UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(user.getEmail());
-
-
-    //                 return new ResponseEntity<String>("{\"token\":\"" +
-    //                         jwtUtil.generateToken2(userDetails) + "\"}",
-    //                         HttpStatus.OK);
-    //             } else {
-    //                 return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
-    //                         HttpStatus.BAD_REQUEST);
-    //             }
-    //         }
-    //     } catch (Exception ex) {
-    //         log.error("{}", ex);
-    //     }
-    //     return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}",
-    //             HttpStatus.BAD_REQUEST);
-    // }
-
-	
-
    
 
-	
+        @Override
+        public ResponseEntity<String> login(Map<String, String> requestMap) {
+            log.info("Inside login");
+            try {
+                User user =new User();
+                Role role = roleDao.findById("Admin").get();
+                        Role role1 = roleDao.findById("User").get();
+
+
+                Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
+            );
+                if (auth.isAuthenticated()) {
+                    user = userDao.findByEmailId1(requestMap.get("email")).get();
+                    String roleDuty= user.getRole();
+                    if (user.getStatus().contains("true")) {
+                          
+                          Set<Role> userRoles = new HashSet<>();
+                         
+                          if( requestMap.get("email").contains("admin")) {
+                  
+                          userRoles.add(role);
+                          user.setRole(roleDuty);
+                  
+                      }else{
+                          
+                           userRoles.add(role1);
+                           user.setRole(roleDuty);
+                      }
+                          user.setRoles2(userRoles);
+                         
+                          userDao.save(user);
+
+                          UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(requestMap.get("email"));
+                        return new ResponseEntity<String>( "{\"token\":\"" +
+                        jwtUtil.generateToken2(userDetails)
+                       // jwtUtil.generateToken(user.getEmail(),user.getRole()) 
+                        //+  "   "  + userDetails   
+                        //jwtUtil.generateToken(customerUsersDetailsService.getUserDetail().getEmail(), customerUsersDetailsService.getUserDetail().getRole())
+                                         + "\"}",
+                                HttpStatus.OK);
+    
+                    } else {
+                        return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
+                                HttpStatus.BAD_REQUEST);
+                    }
+                }
+            } catch (Exception ex) {
+                log.error("{}", ex);
+            }
+            return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+
 	
 	@Transactional
 	@Override
@@ -499,13 +464,16 @@ private static Key generateKey() {
         User user = new User();
         String email = jwtRequest.getEmail();
         String password = jwtRequest.getPassword();
-        authenticate(email, password);
+             authenticate(email, password);
 
-      
-    
+    // Authentication auth = authenticationManager.authenticate(
+    //                 new UsernamePasswordAuthenticationToken(email,password));
+        
+   
+        user = userDao.findByEmailId1(email).get();
         Role role = roleDao.findById("Admin").get();
        Role role1 = roleDao.findById("User").get();
-      // String roleDuty=  customerUsersDetailsService.getUserDetail().getRoles();
+      
       String roleDuty= user.getRole();
      
          Set<Role> userRoles = new HashSet<>();
@@ -522,22 +490,19 @@ private static Key generateKey() {
      }
  
          user.setRoles2(userRoles);
-         
 
-
-       user = userDao.findByEmailId1(email).get();
+      // user = userDao.findByEmailId1(email).get();
         
          userDao.save(user);
      UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(email);
     
 
-     //   String newGeneratedToken = jwtUtil.generateToken2(userDetails);
-
-        String newGeneratedToken = jwtUtil.generateToken(user.getEmail(),user.getRole());
+       String newGeneratedToken = jwtUtil.generateToken2(userDetails);
+       // String newGeneratedToken = jwtUtil.generateToken(email,roleDuty);
+       // String newGeneratedToken = jwtUtil.generateToken(user.getEmail(),user.getRole());
         return new JwtResponse(user, newGeneratedToken);
-        
-	}
-
+      
+    }
 
 
     @Override

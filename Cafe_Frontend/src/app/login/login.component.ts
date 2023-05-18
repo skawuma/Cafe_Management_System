@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
     this.userService.login(data).subscribe((response: any) => {
       this.ngxService.stop();
       this.dialogRef.close();
-      localStorage.setItem('jwtToken', response.jwtToken);
-      //localStorage.setItem('token', response.token);
+      //localStorage.setItem('jwtToken', response.jwtToken);
+      localStorage.setItem('token', response.token);
       this.router.navigate(['/cafe/dashboard']);
     }, (error) => {
       console.log(error);

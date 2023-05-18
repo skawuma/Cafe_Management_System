@@ -76,7 +76,7 @@ public class JwtUtil {
 
 	    public String generateToken(String username, String role){
 	        Map<String,Object> claims=new HashMap<>();
-	        claims.put("roles", role);
+	        claims.put("role", role);
 	        return createToken(claims,username);
 	    }
 
@@ -107,7 +107,7 @@ public class JwtUtil {
         for(Role role:user.getRoles2()){
             Userroles.add(role.getRoleName());
         }
-        claims.put("Roles",Userroles.toArray());
+        claims.put("role",Userroles.toString().replace("[", "").replace("]", ""));
         return createToken(claims, userDetails.getUsername());
 			
 		}
