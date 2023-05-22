@@ -38,12 +38,12 @@ public interface UserRest {
     @PostMapping(path = "/login")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap);
 
-  @PreAuthorize("hasRole('Admin')")
+  // @PreAuthorize("hasRole('Admin')")
     @GetMapping(path = "/get")
     public ResponseEntity<List<UserWrapper>> getAllUser();
 
 
-     @PreAuthorize("hasRole('Admin')")
+    //  @PreAuthorize("hasRole('Admin')")
     @GetMapping("/getall")
 	public Iterable<User> readAllUsers();
 
@@ -53,7 +53,7 @@ public interface UserRest {
     @GetMapping(path = "/checkToken")
     ResponseEntity<String> checkToken();
 
-    @PutMapping(path = "/changePassword")
+    @PostMapping(path = "/changePassword")
     ResponseEntity<String> changePassword(@RequestBody Map<String, String> requestMap);
 
     @PostMapping(path = "/forgotPassword")

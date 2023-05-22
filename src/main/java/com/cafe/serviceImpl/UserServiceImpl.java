@@ -24,7 +24,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -138,7 +138,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-        user.setPassword(requestMap.get("password"));
+        user.setPassword1(requestMap.get("password"));
         user.setRole("User");
         user.setStatus("false");
         // user.setRole(role);
@@ -164,7 +164,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         adminUser.setId((1));
     	adminUser.setUserName("admin123");
        // adminUser.setPassword("admin@pass"); 
-    	adminUser.setPassword(getEncodedPassword("admin@pass"));
+    	adminUser.setPassword1(getEncodedPassword("admin@pass"));
     	adminUser.setName("Administrator1");
         adminUser.setContactNumber("99999");
         adminUser.setEmail("admin@gmail.com");
@@ -179,7 +179,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
     	User user = new User();
         user.setId((2));
     	user.setUserName("ska"); 
-    	user.setPassword(getEncodedPassword("ska@pass"));
+    	user.setPassword1(getEncodedPassword("ska@pass"));
     	user.setName("SamuelKawuma");
     	user.setContactNumber("989898");
     	user.setEmail("ska@gmail.com");
@@ -194,7 +194,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         User user1 = new User();
         user1.setId((3));
     	user1.setUserName("dka"); 
-    	user1.setPassword(getEncodedPassword("123"));
+    	user1.setPassword1(getEncodedPassword("123"));
     	user1.setName("Deborah Katimbo");
     	user1.setContactNumber("9784949594");
     	user1.setEmail("cynthiamuganzi@gmail.com");
@@ -209,7 +209,8 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         User user2 = new User();
         user2.setId((4));
     	user2.setUserName("christo"); 
-    	user2.setPassword(getEncodedPassword("321"));
+        user2.setPassword1("321");
+    	user2.setPassword1(getEncodedPassword("321"));
     	user2.setName("Christopher Kawuma");
     	user2.setContactNumber("9783982410");
     	user2.setEmail("christokawuma69@gmail.com");
@@ -223,7 +224,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         User adminUser1 = new User();
         adminUser1.setId((5));
     	adminUser1.setUserName("admin321"); 
-    	adminUser1.setPassword(getEncodedPassword("admin@pass123"));
+    	adminUser1.setPassword1(getEncodedPassword("admin@pass123"));
     	adminUser1.setName("Administrator2");
         adminUser1.setContactNumber("98787874");
         adminUser1.setEmail("admin@mailinator.com");
@@ -246,7 +247,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         public ResponseEntity<String> login(Map<String, String> requestMap) {
             log.info("Inside login");
             try {
-                User user =new User();
+                User user = new User();
                 Role role = roleDao.findById("Admin").get();
                         Role role1 = roleDao.findById("User").get();
 
@@ -277,8 +278,8 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 
                           UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(requestMap.get("email"));
                         return new ResponseEntity<String>( "{\"token\":\"" +
-                        jwtUtil.generateToken2(userDetails)
-                       // jwtUtil.generateToken(user.getEmail(),user.getRole()) 
+                      jwtUtil.generateToken2(userDetails)
+                    // jwtUtil.generateToken(user.getEmail(),user.getRole()) 
                         //+  "   "  + userDetails   
                         //jwtUtil.generateToken(customerUsersDetailsService.getUserDetail().getEmail(), customerUsersDetailsService.getUserDetail().getRole())
                                          + "\"}",
@@ -338,9 +339,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-	 
-	
-	
+	 	
 	
 	private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
         allAdmin.remove(jwtFilter.getCurrentUser());
@@ -356,16 +355,18 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 		return CafeUtils.getResponseEntity("true", HttpStatus.OK);
     }
 	
-
 	@Override
 	public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
+       // BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 		try {
-            // User userObj =new User();
-            //      userObj = userDao.findByEmailId1(userObj.getEmail()).get();
-              User userObj = userDao.findByEmail(jwtFilter.getCurrentUser());
+            User userObj = userDao.findByEmail(jwtFilter.getCurrentUser()); 
+             
+             String hashedPassword= userObj.getPassword1();
+           boolean isPassMatched =passwordEncoder.matches(requestMap.get("oldPassword"),hashedPassword);
             if (!userObj.equals(null)) {
-                if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
-                    userObj.setPassword(requestMap.get("newPassword"));
+                if (isPassMatched) {
+                //if (userObj.getPassword1().equals(requestMap.get("oldPassword"))) {
+                    userObj.setPassword1(getEncodedPassword(requestMap.get("newPassword")));
                     userDao.save(userObj);
                     return CafeUtils.getResponseEntity("Password Updated Successfully", HttpStatus.OK);
                 }
@@ -424,7 +425,6 @@ public static String encrypt(String pwd) {
 
 }
 
-
     /**
  * Decrypt a string with AES encryption algorithm.
  *
@@ -455,9 +455,6 @@ private static Key generateKey() {
     return key;
 }
 
-
-
-
 	@Override
 	public JwtResponse createJwtToken(JwtRequest jwtRequest)throws Exception {
 	   
@@ -466,10 +463,6 @@ private static Key generateKey() {
         String password = jwtRequest.getPassword();
              authenticate(email, password);
 
-    // Authentication auth = authenticationManager.authenticate(
-    //                 new UsernamePasswordAuthenticationToken(email,password));
-        
-   
         user = userDao.findByEmailId1(email).get();
         Role role = roleDao.findById("Admin").get();
        Role role1 = roleDao.findById("User").get();
@@ -488,23 +481,19 @@ private static Key generateKey() {
           userRoles.add(role1);
           user.setRole(roleDuty);
      }
- 
          user.setRoles2(userRoles);
-
       // user = userDao.findByEmailId1(email).get();
         
          userDao.save(user);
      UserDetails userDetails = customerUsersDetailsService.loadUserByUsername(email);
     
 
-       String newGeneratedToken = jwtUtil.generateToken2(userDetails);
+       //String newGeneratedToken = jwtUtil.generateToken2(userDetails);
        // String newGeneratedToken = jwtUtil.generateToken(email,roleDuty);
-       // String newGeneratedToken = jwtUtil.generateToken(user.getEmail(),user.getRole());
+     String newGeneratedToken = jwtUtil.generateToken(user.getEmail(),user.getRole());
         return new JwtResponse(user, newGeneratedToken);
       
     }
-
-
     @Override
     public Iterable<User> displayAllUsers() {
        return userDao.findAll();

@@ -17,7 +17,7 @@ export class RouteGuardService implements CanActivate {
 
     //const token: any = localStorage.getItem('jwtToken')|| 'null' ;
 
-    const token: any = localStorage.getItem('token');
+    const token: any = localStorage.getItem('token')|| 'null';
 
     // decode the token to get its payload
     var tokenPayload: any;

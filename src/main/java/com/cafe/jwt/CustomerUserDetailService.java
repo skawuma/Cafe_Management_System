@@ -48,7 +48,7 @@ public class CustomerUserDetailService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
             		
                     user.getEmail(),
-                    user.getPassword(),
+                    user.getPassword1(),
                     getAuthority(user)
                     
             );

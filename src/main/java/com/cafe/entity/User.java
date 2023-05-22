@@ -67,7 +67,7 @@ public class User implements  UserDetails {
 	private String userName;
 	
 	@Column(name= "password")
-	private String password;
+	private String password1;
 	
 	@Column(name ="name")
 	private String name;
@@ -149,12 +149,16 @@ public class User implements  UserDetails {
 		this.status = status;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword1(String password1) {
+		this.password1 = password1;
 	}
 
 	public Integer getId() {
 		return id;
+	}
+	public String getPassword1() {
+		// TODO Auto-generated method stub
+		return password1;
 	}
 
 	public void setId(Integer id) {
@@ -181,7 +185,7 @@ public class User implements  UserDetails {
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return password;
+		return password1;
 	}
 
 	@Override

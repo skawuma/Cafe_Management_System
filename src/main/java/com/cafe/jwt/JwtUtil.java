@@ -37,9 +37,7 @@ public class JwtUtil {
 	UserDao userDao;
 	
 	
-	 public static final String SECRET = 
-	 //"btechdays";
-	     "3273357638792F423F4528482B4D6251655468576D5A7133743677397A244326";
+	 public static final String SECRET ="655468576D5A7134743777217A25432A462D4A614E635266556A586E32723575";
 
 
 	    public String extractUsername(String token) {
@@ -99,11 +97,11 @@ public class JwtUtil {
 
 
 		public String generateToken2(UserDetails userDetails) {
-			User user = new User();
+			//User user = new User();
 			Map<String, Object> claims = new HashMap<>();
         Set<String> Userroles = new HashSet<>();
-		String email = user.getEmail();
-        user = userDao.findByEmailId(userDetails.getUsername());
+		//String email = user.getEmail();
+        User user = userDao.findByEmailId(userDetails.getUsername());
         for(Role role:user.getRoles2()){
             Userroles.add(role.getRoleName());
         }

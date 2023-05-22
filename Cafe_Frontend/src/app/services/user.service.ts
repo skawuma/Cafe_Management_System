@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  headers = new HttpHeaders({ 'No-Auth': 'True' });
   url = environment.apiUrl;
   constructor(private httpClient:HttpClient) { }
 
@@ -46,11 +47,15 @@ export class UserService {
     })
   }
 
-  changePassword(data: any) {
+  changePassword1(data: any) {
     return this.httpClient.post(this.url +
       "/user/changePassword/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     })
   } 
+//Updated fuction for Change password
+  changePassword(user: object): Observable<Object>{
+    return this.httpClient.post(`${this.url}/user/changePassword`, user);
+  }
 
 }

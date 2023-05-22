@@ -65,13 +65,8 @@ public class SecurityConfig {
 	
 	
 	
-    // @Bean
-    // public JavaMailSender javaMailSender() {
-    //     return new JavaMailSenderImpl();
-    // }
 
-
-@Primary    
+  @Primary
 @Bean
 public UserDetailsService  CustomerUserDetailService ()
 {
@@ -112,16 +107,21 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     .and()
     .csrf() 
     .disable()
+    
     .authorizeHttpRequests()
 
             .requestMatchers("/user/login","/user/signup","/user/forgotPassword","user/login1").permitAll() 
-           //.requestMatchers(HttpMethod.GET,"/user/get","/user/update","/user/getall").hasRole("Admin")
-            // .requestMatchers(HttpMethod.GET,"/user/checkToken").hasAnyRole("Admin","User")
+           .requestMatchers("/user/get","/user/getall").hasRole("Admin")
+             //.requestMatchers("/user/changePassword").hasAnyRole("Admin","User")
+             //.requestMatchers(HttpMethod.PUT,"/user/update").hasAnyRole("Admin","User")
             .anyRequest()
             .authenticated()
             .and()
+            // .headers().httpStrictTransportSecurity().disable()
+            // .and()
             .exceptionHandling()
             .and()
+            
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
