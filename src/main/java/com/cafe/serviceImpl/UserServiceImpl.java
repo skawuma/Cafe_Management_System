@@ -368,6 +368,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
                 //if (userObj.getPassword1().equals(requestMap.get("oldPassword"))) {
                     userObj.setPassword1(getEncodedPassword(requestMap.get("newPassword")));
                     userDao.save(userObj);
+                    emailUtils.sendSimpleMessage1(jwtFilter.getCurrentUser(), "PASSWORD  CHANGED!! ","IF YOU DONT RECOGNIZE THIS EMAIL  PLEASE CONTACT ADMIN  ELSE IGNORE");
                     return CafeUtils.getResponseEntity("Password Updated Successfully", HttpStatus.OK);
                 }
                 return CafeUtils.getResponseEntity("Incorrect Old Password", HttpStatus.BAD_REQUEST);

@@ -32,6 +32,14 @@ public class EmailUtils {
             message.setCc(getCcArray(list));
         emailSender.send(message);
     }
+    public void sendSimpleMessage1(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("skawuma69@gmail.com");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
+    }
 
     private String[] getCcArray(List<String> ccList) {
         String[] cc = new String[ccList.size()];
@@ -53,7 +61,7 @@ public class EmailUtils {
     }
 
 
-    
+
 
 
 }
