@@ -15,7 +15,7 @@ Apr 5, 2023
 public interface CategoryService {
 	
 	  ResponseEntity<String> addNewCategory(Map<String, String> requestMap);
-
+	  public void initCategory();
 	 ResponseEntity<List<Category>> getAllCategory(String filterValue);
 
 	ResponseEntity<String> updateCategory(Map<String, String> requestMap);

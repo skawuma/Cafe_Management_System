@@ -39,17 +39,56 @@ public class CategoryServiceImpl implements CategoryService {
 	static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringApplication.class);
 
 	
+    @Override
+	public void initCategory(){
+
+     Category cat1 = new Category();
+	 cat1.setId(1);
+	 cat1.setName("Pizzas");
+     categoryDao.save(cat1);
+	 
+
+
+     Category cat2 = new Category();
+	 cat2.setId(2);
+	 cat2.setName("Subs");
+     categoryDao.save(cat2);
+
+
+     Category cat3 = new Category();
+	 cat3.setId(3);
+	 cat3.setName("Canolis");
+     categoryDao.save(cat3);
+
+
+
+     Category cat4 = new Category();
+	 cat4.setId(4);
+	 cat4.setName("Cakes");
+     categoryDao.save(cat4);
+	
+
+
+
+
+
+
+	}
+
+
+
+
 	@Override
 	public ResponseEntity<String> addNewCategory(Map<String, String> requestMap) {
 		try {
-			if (jwtFilter.isAdmin()) {
+			// if (jwtFilter.isAdmin()) {
 				if (validateCategoryMap(requestMap, false)) {
 					categoryDao.save(getCategoryFromMap(requestMap, false));
 					return CafeUtils.getResponseEntity("Category Added Successfully", HttpStatus.OK);
 				}
-			} else {
-				return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-			}
+			// } else {
+			// 	return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			// }
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

@@ -112,6 +112,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 
             .requestMatchers("/user/login","/user/signup","/user/forgotPassword","user/login1").permitAll() 
            .requestMatchers("/user/get","/user/getall").hasRole("Admin")
+           .requestMatchers("/category/add","/category/get","/category/update").hasRole("Admin")
              //.requestMatchers("/user/changePassword").hasAnyRole("Admin","User")
              //.requestMatchers(HttpMethod.PUT,"/user/update").hasAnyRole("Admin","User")
             .anyRequest()

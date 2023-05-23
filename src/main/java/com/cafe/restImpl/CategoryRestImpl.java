@@ -6,12 +6,15 @@ import java.util.Map;
 import com.cafe.constants.CafeConstants;
 import com.cafe.entity.Category;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import com.cafe.service.CategoryService;
 import com.cafe.rest.CategoryRest;
 import com.cafe.utils.CafeUtils;
+
+import jakarta.annotation.PostConstruct;
 
 /*
 samuelkawuma
@@ -20,7 +23,7 @@ Apr 5, 2023
 */
 @RestController
 public class CategoryRestImpl implements CategoryRest {
-	
+	@Autowired
 	CategoryService categoryService;
 	@Override
 	public ResponseEntity<String> addNewCategory(Map<String, String> requestMap) {
@@ -30,6 +33,12 @@ public class CategoryRestImpl implements CategoryRest {
             ex.printStackTrace();
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+
+}
+@PostConstruct
+public void initCategory()
+{
+	categoryService.initCategory();
 
 }
 	@Override
