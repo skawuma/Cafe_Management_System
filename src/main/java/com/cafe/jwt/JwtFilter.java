@@ -46,7 +46,7 @@ RoleDao roleDao;
 		     private String userName;
                  Claims claims ;
 		    //private String userName;
-           
+            String token;
 
     //     	@Override
     // protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -76,7 +76,7 @@ RoleDao roleDao;
                    filterChain.doFilter(httpServletRequest, httpServletResponse);
                } else {
                    String authorizationHeader = httpServletRequest.getHeader("Authorization");
-                   String token  =null;
+                   //String token  =null;
                   
                    //String userName;
                     token = authorizationHeader.substring(7);
@@ -145,14 +145,14 @@ RoleDao roleDao;
 			
 			   public boolean isAdmin(){
             
-				return "Admin".equalsIgnoreCase((String) claims.get("roles"));
+				return "Admin".equalsIgnoreCase((String) claims.get("role"));
         
 			   
 			}
 
 			    public boolean isUser(){
 
-		       return "user".equalsIgnoreCase((String) claims.get("roles"));
+		       return "user".equalsIgnoreCase((String) claims.get("role"));
 			 	}
 
 			    public String getCurrentUser(){

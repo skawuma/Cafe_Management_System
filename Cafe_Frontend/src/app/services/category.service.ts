@@ -23,10 +23,14 @@ export class CategoryService {
   //   })
   // }
 
-  update(data: any) {
+  update(category: Object): Observable<Object> {
+    return this.httpClient.post(`${this.url}/category/update`, category);
+  }
+
+  update1(data: any) {
     return this.httpClient.post(this.url +
       "/category/update", data, {
-      headers: new HttpHeaders().set('Content-Type', "application/json")
+      headers: new HttpHeaders({ 'No-Auth': 'True' }).set('Content-Type', "application/json")
     })
   }
 

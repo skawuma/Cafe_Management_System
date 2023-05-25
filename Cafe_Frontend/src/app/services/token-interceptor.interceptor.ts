@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 export class TokenInterceptorService implements HttpInterceptor {
   constructor(private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('token')||null;
+    const token = localStorage.getItem('token');
+   // ??null;
 
     if (token) {
       // If we have a token, we set it to the header
