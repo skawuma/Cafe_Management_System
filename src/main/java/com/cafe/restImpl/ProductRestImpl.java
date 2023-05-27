@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,8 @@ Apr 8, 2023
 @RestController
 public class ProductRestImpl implements ProductRest {
 	
-	ProductService productService;
+	@Autowired
+    ProductService productService;
 
 	@Override
 	public ResponseEntity<String> addNewProduct(Map<String, String> requestMap) {
