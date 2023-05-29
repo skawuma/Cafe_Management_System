@@ -27,12 +27,12 @@ export class CategoryService {
     return this.httpClient.post(`${this.url}/category/update`, category);
   }
 
-  update1(data: any) {
-    return this.httpClient.post(this.url +
-      "/category/update", data, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' }).set('Content-Type', "application/json")
-    })
-  }
+  // update1(data: any) {
+  //   return this.httpClient.post(this.url +
+  //     "/category/update", data, {
+  //     headers: new HttpHeaders({ 'No-Auth': 'True' }).set('Content-Type', "application/json")
+  //   })
+  // }
 
   getCategorys() {
     return this.httpClient.get(this.url + "/category/get");
