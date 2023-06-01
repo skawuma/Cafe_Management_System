@@ -81,14 +81,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public ResponseEntity<String> addNewCategory(Map<String, String> requestMap) {
 		try {
-			// if (jwtFilter.isAdmin()) {
+			if (jwtFilter.isAdmin()) {
 				if (validateCategoryMap(requestMap, false)) {
 					categoryDao.save(getCategoryFromMap(requestMap, false));
 					return CafeUtils.getResponseEntity("Category Added Successfully", HttpStatus.OK);
 				}
-			// } else {
-			// 	return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-			// }
+			} else {
+				return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

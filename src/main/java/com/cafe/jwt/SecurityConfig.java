@@ -66,7 +66,7 @@ public class SecurityConfig {
 	
 	
 
-  @Primary
+@Primary
 @Bean
 public UserDetailsService  CustomerUserDetailService ()
 {
@@ -111,7 +111,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     .authorizeHttpRequests()
 
             .requestMatchers("/user/login","/user/signup","/user/forgotPassword","user/login1").permitAll() 
-           .requestMatchers("/user/get","/user/getall").hasRole("Admin")
+           .requestMatchers("/user/get","/user/getall","/user/update").hasRole("Admin")
            .requestMatchers("/category/add","/category/get","/category/update").hasRole("Admin")
              //.requestMatchers("/user/changePassword").hasAnyRole("Admin","User")
              //.requestMatchers(HttpMethod.PUT,"/user/update").hasAnyRole("Admin","User")

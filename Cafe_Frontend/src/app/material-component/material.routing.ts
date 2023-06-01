@@ -41,12 +41,13 @@ export const MaterialRoutes: Routes = [
       }
     },
     {
-      path: 'User',
+      path: 'user',
       component: ManageUserComponent,
       canActivate: [RouteGuardService],
       data: {
         expectedRole: ['Admin']
       }
-    },
+    }
+    ,
     { path: '**', component: DashboardComponent }
   ];

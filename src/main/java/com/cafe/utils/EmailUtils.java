@@ -22,6 +22,18 @@ public class EmailUtils {
 	@Autowired
 	private JavaMailSender emailSender;
 
+
+    public void sendSimpleMessage3( String subject, String text, List<String> list) {
+		SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("skawuma69@gmail.com");
+        message.setTo("christokawuma69@gmail.com");
+        message.setSubject(subject);
+        message.setText(text);
+        if (list != null && list.size() > 0)
+            message.setCc(getCcArray(list));
+        emailSender.send(message);
+    }
+
 	public void sendSimpleMessage(String  to, String subject, String text, List<String> list) {
 		SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("skawuma69@gmail.com");

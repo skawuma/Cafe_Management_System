@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 
     private static final String ALGO = "AES";
-private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
+   private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 	
 	 static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringApplication.class);
 
@@ -96,10 +96,18 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 	public ResponseEntity<String> signUp(Map<String, String> requestMap) {
 		log.info("Inside signup {}", requestMap);
         try {
-            if (validateSignUpMap(requestMap)) {
+            if (validateSignUpMap(requestMap)) {     
                 User user = userDao.findByEmailId(requestMap.get("email"));
                 if (Objects.isNull(user)) {
-                    userDao.save(getUserFromMap(requestMap));
+                   
+                   userDao.save(getUserFromMap(requestMap));
+
+
+
+                  // User user1 = userDao.findByEmailId(requestMap.get("email"));
+                  // Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
+                  // sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
+                   sendMailToAllAdmin1(getUserFromMap(requestMap).getStatus(), getUserFromMap(requestMap).getEmail(),userDao.getAllAdmin());
                     return CafeUtils.getResponseEntity("Successfully Registered.", HttpStatus.OK);
                 } else {
                     return CafeUtils.getResponseEntity("Email already exits.", HttpStatus.BAD_REQUEST);
@@ -129,16 +137,12 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
         userRoles.add(role);
         user.setRoles2(userRoles);
 
-    //    Set<Role> role = new HashSet<>();
-    //    Role userRole = new Role();
-    //    userRole.setRoleName("User");
-    //    roleDao.save(userRole);
-    //    role.add(userRole);
-
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-        user.setPassword1(requestMap.get("password"));
+       // user.setPassword1(requestMap.get("password"));
+       user.setPassword1(getEncodedPassword(requestMap.get("password")));
+       // user.setPassword1(getEncodedPassword(requestMap.get("password")));
         user.setRole("User");
         user.setStatus("false");
         // user.setRole(role);
@@ -162,14 +166,14 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 
         User adminUser = new User();
         adminUser.setId((1));
-    	adminUser.setUserName("admin123");
+    	adminUser.setUserName("user123");
        // adminUser.setPassword("admin@pass"); 
     	adminUser.setPassword1(getEncodedPassword("admin@pass"));
     	adminUser.setName("Administrator1");
         adminUser.setContactNumber("99999");
         adminUser.setEmail("admin@gmail.com");
     	adminUser.setStatus("true");
-        adminUser.setRole("Admin");
+        adminUser.setRole("User");
     	Set<Role> adminRoles = new HashSet<>();
     	adminRoles.add(adminRole);
     	adminUser.setRoles2(adminRoles);
@@ -199,7 +203,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
     	user1.setContactNumber("9784949594");
     	user1.setEmail("cynthiamuganzi@gmail.com");
     	user1.setStatus("true");
-        user1.setRole("User");
+        user1.setRole("Admin");
     	Set<Role> userRoles1 = new HashSet<>();
     	userRoles1.add(userRole);
     	user1.setRoles2(userRoles1);
@@ -215,7 +219,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
     	user2.setContactNumber("9783982410");
     	user2.setEmail("christokawuma69@gmail.com");
     	user2.setStatus("true");
-        user2.setRole("User");
+        user2.setRole("Admin");
     	Set<Role> userRoles2 = new HashSet<>();
     	userRoles2.add(userRole);
     	user2.setRoles2(userRoles2);
@@ -223,13 +227,13 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 
         User adminUser1 = new User();
         adminUser1.setId((5));
-    	adminUser1.setUserName("admin321"); 
+    	adminUser1.setUserName("User321"); 
     	adminUser1.setPassword1(getEncodedPassword("admin@pass123"));
     	adminUser1.setName("Administrator2");
         adminUser1.setContactNumber("98787874");
         adminUser1.setEmail("admin@mailinator.com");
     	adminUser1.setStatus("true");
-        adminUser1.setRole("Admin");
+        adminUser1.setRole("User");
     	Set<Role> adminRoles1 = new HashSet<>();
     	adminRoles1.add(adminRole);
     	adminUser1.setRoles2(adminRoles1);
@@ -262,7 +266,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
                           
                           Set<Role> userRoles = new HashSet<>();
                          
-                          if( requestMap.get("email").contains("admin")) {
+                          if( requestMap.get("email").contains("christokawuma69")||requestMap.get("email").contains("muganzi")) {
                   
                           userRoles.add(role);
                           user.setRole(roleDuty);
@@ -304,14 +308,14 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 	public ResponseEntity<List<UserWrapper>> getAllUser() {
 
 		try {
-        //    if (jwtFilter.isAdmin()) {
+           if (jwtFilter.isAdmin()) {
             
                 return new ResponseEntity<>(userDao.getAllUser(), HttpStatus.OK);
-          //  }
+           }
             
-            //  else {
-            //     return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            // }
+             else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -321,7 +325,7 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
 	@Override
 	public ResponseEntity<String> update(Map<String, String> requestMap) {
 		try {
-          //  if (jwtFilter.isAdmin()) {
+           if (jwtFilter.isAdmin()) {
                 Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
@@ -330,14 +334,24 @@ private static final byte[] keyValue = new byte[] { 'T', 'E', 'S', 'T' };
                 } else {
                     return CafeUtils.getResponseEntity("User id doesn't not exist", HttpStatus.OK);
                 }
-            // } else {
-            //     return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            // }
+            } else {
+                return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+    private void sendMailToAllAdmin1( String status, String user,  List<String> allAdmin) {
+        allAdmin.remove(jwtFilter.getCurrentUser());
+         //user = userDao.findByEmail(jwtFilter.getCurrentUser()); 
+       
+            emailUtils.sendSimpleMessage3( "Account Disabled", "USER:- " + user + " Plsease  Check to Approve Account " , allAdmin);
+        
     }
 	 	
 	
@@ -472,6 +486,8 @@ private static Key generateKey() {
      
          Set<Role> userRoles = new HashSet<>();
         
+        //if( email.contains("kawuma")||email.contains("muganzi")) {
+
          if( email.contains("admin")) {
  
          userRoles.add(role);

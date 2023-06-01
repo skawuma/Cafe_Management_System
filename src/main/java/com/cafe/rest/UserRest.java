@@ -47,7 +47,7 @@ public interface UserRest {
     @GetMapping("/getall")
 	public Iterable<User> readAllUsers();
 
-    @PutMapping(path = "/update")
+    @PostMapping(path = "/update")
     public ResponseEntity<String> update(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/checkToken")

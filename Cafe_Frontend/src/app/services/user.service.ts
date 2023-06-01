@@ -40,7 +40,11 @@ export class UserService {
     return this.httpClient.get(this.url + "/user/get");
   }
 
-  update(data: any) {
+  update(user: Object): Observable<Object> {
+    return this.httpClient.post(`${this.url}/user/update`, user);
+  }
+
+  update1(data: any) {
     return this.httpClient.post(this.url +
       "/user/update", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")

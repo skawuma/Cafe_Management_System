@@ -22,14 +22,14 @@ export class HomeComponent implements OnInit {
       dialogConfig.width = "550px";
       this.dialog.open(SignupComponent, dialogConfig);
     }
-    ngOnInit(): void {}
-  // ngOnInit(): void {
-  //   this.userServices.checkToken().subscribe((response: any) => {
-  //     this.router.navigate(['/cafe/dashboard']);
-  //   }, (error: any) => {
-  //     console.log(error);
-  //   })
-  // }
+   // ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userServices.checkToken().subscribe((response: any) => {
+      this.router.navigate(['/cafe/dashboard']);
+    }, (error: any) => {
+      console.log(error);
+    })
+  }
 
   forgotPasswordAction() {
     const dialogConfig = new MatDialogConfig();
