@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +35,10 @@ public interface CategoryRest {
     @PostMapping(path = "/update")
     ResponseEntity<String> updateCategory(@RequestBody(required = true)
                                                   Map<String, String> requestMap);
-    
-	
+
+     //@PreAuthorize("hasRole('User')")                                              
+     // @PreAuthorize ("hasAnyRole('Admin','User')")                                    
+    @GetMapping( "/createTransaction/{amount}")
+	public  void createTransaction(@PathVariable(name="amount") Double amount );
 
 }

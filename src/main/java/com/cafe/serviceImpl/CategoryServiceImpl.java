@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +19,11 @@ import com.cafe.jwt.JwtFilter;
 import com.cafe.service.CategoryService;
 import com.cafe.utils.CafeUtils;
 import com.google.common.base.Strings;
+import com.google.gson.JsonObject;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -35,6 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	JwtFilter  jwtFilter;
 	
+
+ private static final String KEY="rzp_test_HZAU1fzrIqlcFe";
+ private static final String KEY_SECRET="K8v3dIgKBCuPKuYFsCRewRyC";
+ private static final String   CURRENCY ="USD";
+
+
+
 
 	static final org.slf4j.Logger log = LoggerFactory.getLogger(SpringApplication.class);
 
@@ -159,6 +174,35 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+
+
+	@Override
+	public void createTransaction(Double amount) {
+		
+		try {
+
+			
+			JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("amount",amount *100);
+			jsonObject.put("currency",CURRENCY); 
+		//jsonObject.pu
+			RazorpayClient razorpayClient = new RazorpayClient(KEY, KEY_SECRET);
+
+
+			Order order = razorpayClient.orders.create(jsonObject);
+
+			System.out.println(order);
+		} catch (RazorpayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 
