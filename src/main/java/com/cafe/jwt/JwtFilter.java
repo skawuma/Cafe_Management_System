@@ -31,6 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 @Autowired
 UserDao userDao;
+
 @Autowired
 RoleDao roleDao;
 
