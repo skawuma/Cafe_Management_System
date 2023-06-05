@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import com.cafe.constants.CafeConstants;
 import com.cafe.entity.Category;
+import com.cafe.entity.TransactionDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,8 +63,8 @@ public void initCategory()
 	        return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 }
 	@Override
-	public void createTransaction(Double amount) {
-		categoryService.createTransaction( amount);
+	public TransactionDetails createTransaction(Double amount) {
+		return categoryService.createTransaction( amount);
 		
 	}
 }

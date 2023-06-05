@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 import com.cafe.entity.Category;
+import com.cafe.entity.TransactionDetails;
 
 /*
 samuelkawuma
@@ -19,7 +20,7 @@ public interface CategoryService {
 	 ResponseEntity<List<Category>> getAllCategory(String filterValue);
 
 	ResponseEntity<String> updateCategory(Map<String, String> requestMap);
-   public  void createTransaction(Double amount);
+   public  TransactionDetails createTransaction(Double amount);
 	
 	  
 	  

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafe.entity.Category;
+import com.cafe.entity.TransactionDetails;
 
 @RequestMapping(path = "/category")
 public interface CategoryRest {
@@ -39,6 +40,6 @@ public interface CategoryRest {
      //@PreAuthorize("hasRole('User')")                                              
      // @PreAuthorize ("hasAnyRole('Admin','User')")                                    
     @GetMapping( "/createTransaction/{amount}")
-	public  void createTransaction(@PathVariable(name="amount") Double amount );
+	public  TransactionDetails createTransaction(@PathVariable(name="amount") Double amount );
 
 }

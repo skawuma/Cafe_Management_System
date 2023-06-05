@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.cafe.constants.CafeConstants;
 import com.cafe.dao.CategoryDao;
 import com.cafe.entity.Category;
+import com.cafe.entity.TransactionDetails;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.service.CategoryService;
 import com.cafe.utils.CafeUtils;
@@ -179,7 +180,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 	@Override
-	public void createTransaction(Double amount) {
+	public TransactionDetails createTransaction(Double amount) {
 		
 		try {
 
@@ -194,16 +195,32 @@ public class CategoryServiceImpl implements CategoryService {
 
 			Order order = razorpayClient.orders.create(jsonObject);
 
-			System.out.println(order);
+          return  prepareTransactionDetails(order);
+			// System.out.println(order);
+
 		} catch (RazorpayException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
+
+	private TransactionDetails prepareTransactionDetails (Order order){
+
+
+       String orderId = order.get("id");
+	   String currency = order.get("currency");
+
+	   Integer amount = order.get("amount");
+
+      TransactionDetails transactionDetails = new TransactionDetails(orderId, currency, amount);
+
+	  return transactionDetails;
+	}
 	
 
 }
