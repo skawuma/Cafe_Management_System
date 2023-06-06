@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import * as saveAs from 'file-saver';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BillService } from 'src/app/services/bill.service';
@@ -21,6 +21,7 @@ export class ManageOrderComponent implements OnInit {
   categorys: any = [];
   products: any = [];
   price: any;
+  totalAmount1: any;
   totalAmount: number = 0;
   responseMessage: any;
 
@@ -185,7 +186,36 @@ export class ManageOrderComponent implements OnInit {
         this.ngxService.stop();
       }
     );
+  } 
+
+
+  createTransactionAndPlaceOrder( manageOrderForm: NgForm){
+    var formData = this.manageOrderForm.value;
+   // this.totalAmount = this.totalAmount + formData.total;
+    //this.totalAmount = this.totalAmount;
+   //let amount = this.totalAmount.toString();
+   let amount = this.totalAmount + formData.total;
+
+    this.productService.createTransaction(amount).subscribe(
+      (response)=>{
+        console.log(response);
+      },
+    (error) => {
+      console.log(error);
+    }
+    )
+
   }
+
+
+  // <form [formGroup]="manageOrderForm" (ngSubmit)="createTransactionAndPlaceOrder(manageOrderForm)">
+
+//   <div align = "right">
+//   <button type=" submit" mat-stroked-button color = "primary">Place Order </button>
+// </div>
+
+
+
 
   // public showPDF(fileName: string): void {
   //   this.productService.getPDF(fileName, '')

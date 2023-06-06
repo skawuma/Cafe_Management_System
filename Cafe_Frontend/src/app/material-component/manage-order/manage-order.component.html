@@ -19,7 +19,7 @@
                         <span *ngIf="manageOrderForm.controls.name.errors.pattern">This field is invalid.</span>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="standard" fxFlex>
+                <mat-form-field appearance="standard" fxFlex> 
                     <mat-label> Email
                     </mat-label>
                     <input matInput formControlName="email" required>
@@ -57,13 +57,18 @@
                 </mat-form-field>
             </div>
         </div>
+
+
+
     </form>
 </mat-card>
 <hr>
 <mat-card>
     <b><span>Select Product:-</span></b>
 
-    <form [formGroup]="manageOrderForm">
+
+    <form [formGroup]="manageOrderForm" (ngSubmit)="createTransactionAndPlaceOrder(manageOrderForm)">
+    <!-- <form [formGroup]="manageOrderForm"> -->
         <div fxFlex fxLayout="column">
             <div fxLayout="row wrap">
                 <mat-form-field appearance="standard" fxFlex>
@@ -111,6 +116,10 @@
                 </mat-form-field>
             </div>
         </div>
+
+             <div align = "right">
+              <button type=" submit" mat-stroked-button color = "primary">Place Order </button>
+             </div>
     </form>
     <div>
         <button mat-flat-button color="primary" [disabled]="validateProductAdd()" (click)="add()">Add</button>

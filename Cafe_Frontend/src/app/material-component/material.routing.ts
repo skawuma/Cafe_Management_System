@@ -13,7 +13,8 @@ export const MaterialRoutes: Routes = [
       component: ManageCategoryComponent,
       canActivate: [RouteGuardService],
       data: {
-        expectedRole: ['Admin']
+        expectedRole: ['Admin', 'User']
+       // expectedRole: ['Admin']
       }
     },
     {
@@ -21,7 +22,8 @@ export const MaterialRoutes: Routes = [
       component: ManageProductComponent,
       canActivate: [RouteGuardService],
       data: {
-        expectedRole: ['Admin']
+       // expectedRole: ['Admin']
+       expectedRole: ['Admin', 'User']
       }
     },
     {

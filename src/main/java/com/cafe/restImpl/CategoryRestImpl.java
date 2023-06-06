@@ -63,7 +63,7 @@ public void initCategory()
 	        return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 }
 	@Override
-	public TransactionDetails createTransaction(Double amount) {
+	public TransactionDetails createTransaction(Integer amount) {
 		return categoryService.createTransaction( amount);
 		
 	}

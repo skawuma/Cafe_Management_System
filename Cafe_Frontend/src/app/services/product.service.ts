@@ -24,6 +24,22 @@ export class ProductService {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     })
   }
+ 
+ public  createTransaction(amount: any){
+    return this.httpClient.get(this.url + "/category/createTransaction/" + amount);
+    ///createTransaction/{amount}
+  }
+
+  // createTransaction3(amount:any): Observable<any> {
+  //   return this.httpClient.get(`${this.url}/category/createTransaction/${amount}`);
+  // }
+
+  // createTransaction2(amount: any): Observable<any> {
+  //   return this.httpClient.get(`${this.url}/category/createTransaction/`, amount);
+  // }
+  // createTransaction4(amount:any): Observable<any> {
+  //   return this.httpClient.get(`${this.url}/category/createTransaction/${amount}`, { responseType: 'text' });
+  // }
 
   getProducts() {
     return this.httpClient.get(this.url + "/product/get");

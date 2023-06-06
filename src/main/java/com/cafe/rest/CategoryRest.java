@@ -10,6 +10,9 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cafe.entity.Category;
 import com.cafe.entity.TransactionDetails;
 
+
+@Controller
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/category")
 public interface CategoryRest {
 	
@@ -39,7 +45,7 @@ public interface CategoryRest {
 
      //@PreAuthorize("hasRole('User')")                                              
      // @PreAuthorize ("hasAnyRole('Admin','User')")                                    
-    @GetMapping( "/createTransaction/{amount}")
-	public  TransactionDetails createTransaction(@PathVariable(name="amount") Double amount );
+    @GetMapping(path = "/createTransaction/{amount}")
+	public  TransactionDetails createTransaction(@PathVariable(name="amount") Integer amount );
 
 }

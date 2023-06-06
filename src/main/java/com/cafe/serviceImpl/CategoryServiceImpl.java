@@ -180,7 +180,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 	@Override
-	public TransactionDetails createTransaction(Double amount) {
+	public TransactionDetails createTransaction(Integer amount) {
 		
 		try {
 
