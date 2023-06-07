@@ -217,7 +217,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	   Integer amount = order.get("amount");
 
-      TransactionDetails transactionDetails = new TransactionDetails(orderId, currency, amount);
+      TransactionDetails transactionDetails = new TransactionDetails(orderId, currency, amount, KEY);
 
 	  return transactionDetails;
 	}
