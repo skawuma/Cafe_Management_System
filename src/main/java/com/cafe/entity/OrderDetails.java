@@ -5,8 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "OrderDetails")
 public class OrderDetails {
 
     @Id
@@ -20,10 +22,8 @@ public class OrderDetails {
     private String orderStatus;
     private Integer orderAmount;
     private String paymentMethod;
-
     @OneToOne
     private Product product;
-
     @OneToOne
     private User user;
 
@@ -43,6 +43,15 @@ public class OrderDetails {
 
 
    
+
+
+
+
+  
+
+
+
+
 
 
 

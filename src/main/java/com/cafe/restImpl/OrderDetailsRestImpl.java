@@ -12,23 +12,22 @@ import com.cafe.service.OrderDetailsService;
 
 @ComponentScan
 @RestController
-
-
-
 public class OrderDetailsRestImpl implements OrderDetailsRest {
 
-
-
-@Autowired
-OrderDetailsService orderDetailsService;
+    @Autowired
+    OrderDetailsService orderDetailsService;
 
     @Override
-    public void placeOrder(@RequestBody OrderInput OrderInput ){
-        try {
-            orderDetailsService.placeOrder(OrderInput);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public void placeOrder(OrderInput orderInput )
+    
+    {
+
+      try {
+            orderDetailsService.placeOrder(orderInput);
+       } catch (Exception ex) {
+           ex.printStackTrace();
+     }
+     
     }
     
 }

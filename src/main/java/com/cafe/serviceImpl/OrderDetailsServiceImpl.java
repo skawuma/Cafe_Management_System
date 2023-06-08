@@ -20,12 +20,12 @@ import com.cafe.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Slf4j
+
 @Service
 public class OrderDetailsServiceImpl implements OrderDetailsService{
 
 private static final  String ORDER_PLACED ="Placed";
-private static final  String PAY_TYPE ="Credit";
+// private static final  String PAY_TYPE ="Credit";
 
 @Autowired
 UserDao userDao;  
@@ -37,37 +37,36 @@ OrderDetailsDao orderDetailsDao;
 private ProductDao productDao;
 
 @Autowired
-	JwtFilter jwtFilter;
+JwtFilter jwtFilter;
 
     
     @Override
     public void placeOrder(OrderInput orderInput) {
     List<OrderProductQuantity> productQuantityList = orderInput.getOrderProductQuantityList();
 
-   for (OrderProductQuantity o: productQuantityList){
+   for (OrderProductQuantity o: productQuantityList){  
 
     Product product =productDao.findById(o.getProductId()).get();
 
-     String currentUser = jwtFilter.getCurrentUser();   
+      String currentUser = jwtFilter.getCurrentUser(); 
+    // String currentUser = jwtFilter.CURRENT_USER; 
+     User user = userDao.findByEmailId1(currentUser).get();
 
-     User user =  userDao.findByEmail(currentUser);  
+    //  User user =  userDao.findByEmail(currentUser);  
 
-    OrderDetails orderDetail = new OrderDetails(orderInput.getEmail(), orderInput.getFullName(), orderInput.getContactNumber(), orderInput.getContactNumber(), orderInput.getAlternateContactNumber(),  ORDER_PLACED, product.getPrice()*o.getQuantity() , product, user
-
-
-    );
-
-    orderDetailsDao.save(orderDetail);
-
+    OrderDetails orderDetails = new OrderDetails(orderInput.getEmail(),
+     orderInput.getFullName(),  
+     orderInput.getFullAddress() , 
+     orderInput.getContactNumber(),
+      orderInput.getAlternateContactNumber(), 
+       ORDER_PLACED,
+        product.getPrice()* o.getQuantity(),
+        product, user);
+    
+    orderDetailsDao.save( orderDetails);
 
    }
- 
 
     }
-    
-    
-    
-
-
     
 }

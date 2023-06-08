@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.cafe.entity.OrderInput;
 
 @RequestMapping
@@ -14,8 +13,8 @@ public interface OrderDetailsRest {
  
 
 
-    @PostMapping( path ="/placeOrder")
-    public void placeOrder(@RequestBody OrderInput OrderInput );
+    @PostMapping(path ="/placeOrder")
+    public void placeOrder(@RequestBody OrderInput orderInput);
 
         
 

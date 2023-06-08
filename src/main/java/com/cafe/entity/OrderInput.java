@@ -2,12 +2,13 @@ package com.cafe.entity;
 
 import java.util.List;
 
+
+
 public class OrderInput {
 
-
+private String email;
 private String fullName;
 private String fullAddress;
-private String email;
 private String contactNumber;
 private String alternateContactNumber;  
 private List<OrderProductQuantity>OrderProductQuantityList;
