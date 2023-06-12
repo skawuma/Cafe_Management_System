@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
     	adminUser.setStatus("true");
         adminUser.setRole("User");
     	Set<Role> adminRoles = new HashSet<>();
-    	adminRoles.add(adminRole);
+    	adminRoles.add(userRole);
     	adminUser.setRoles2(adminRoles);
     	userDao.save(adminUser);
 
@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
     	user1.setStatus("true");
         user1.setRole("Admin");
     	Set<Role> userRoles1 = new HashSet<>();
-    	userRoles1.add(userRole);
+    	userRoles1.add(adminRole);
     	user1.setRoles2(userRoles1);
     	userDao.save(user1); 
 
@@ -221,7 +221,7 @@ public class UserServiceImpl implements UserService {
     	user2.setStatus("true");
         user2.setRole("Admin");
     	Set<Role> userRoles2 = new HashSet<>();
-    	userRoles2.add(userRole);
+    	userRoles2.add(adminRole);
     	user2.setRoles2(userRoles2);
     	userDao.save(user2); 
 
@@ -235,7 +235,7 @@ public class UserServiceImpl implements UserService {
     	adminUser1.setStatus("true");
         adminUser1.setRole("User");
     	Set<Role> adminRoles1 = new HashSet<>();
-    	adminRoles1.add(adminRole);
+    	adminRoles1.add(userRole);
     	adminUser1.setRoles2(adminRoles1);
     	userDao.save(adminUser1);
 

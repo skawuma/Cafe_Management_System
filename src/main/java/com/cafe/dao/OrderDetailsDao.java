@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.cafe.entity.OrderDetails;
 
-public interface OrderDetailsDao extends  CrudRepository<OrderDetails,Integer> {
+public interface OrderDetailsDao extends  JpaRepository<OrderDetails,Integer> {
     
 }

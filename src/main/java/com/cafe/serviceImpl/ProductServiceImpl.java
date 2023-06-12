@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cafe.constants.CafeConstants;
+import com.cafe.dao.CategoryDao;
 import com.cafe.dao.ProductDao;
 import com.cafe.entity.Category;
+import com.cafe.entity.OrderProductQuantity;
 import com.cafe.entity.Product;
 import com.cafe.jwt.JwtFilter;
 import com.cafe.service.ProductService;
@@ -34,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	JwtFilter  jwtFilter;
+
+    @Autowired
+	CategoryDao categoryDao;
 
 	@Override
 	public ResponseEntity<String> addNewProduct(Map<String, String> requestMap) {
@@ -179,5 +184,70 @@ public class ProductServiceImpl implements ProductService {
         }
         return new ResponseEntity<>(new ProductWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+    @Override
+    public void initProduct() {
+     List<OrderProductQuantity> productQuantityList =new  ArrayList<OrderProductQuantity>();
+    Category cat1 = new Category();
+    
+	cat1.setName("Pizzas");
+    categoryDao.save(cat1);
+
+     Category cat2 = new Category();
+	
+	 cat2.setName("Subs");
+     categoryDao.save(cat2);
+
+
+     Category cat3 = new Category();
+	 
+	 cat3.setName("Fried Rice");
+     categoryDao.save(cat3);
+
+
+
+     Category cat4 = new Category();
+	
+	 cat4.setName("Cakes");
+     categoryDao.save(cat4);
+
+        Product prd1 = new Product();
+        // prd1.setId(1);
+        prd1.setName("Chicken Alfredo");
+        prd1.setCategory(cat1);
+        prd1.setDescription("Butter, Garlic, Onion, Grilled shredded chicken, Heavy cream, Milk, Parmesan, Mozzarella, Olive oil, Ground black pepper or white pepper, Green Onions");
+        prd1.setPrice(12);
+        prd1.setStatus("true");
+        productDao.save(prd1);
+       
+    
+
+        Product prd2 = new Product();
+        // prd2.setId(2);
+        prd2.setName("Cheeseburger Style");
+        prd2.setCategory(cat1);
+        prd2.setDescription("Tomatoes, Cheese sauce, CheeseGround beef, Lettuce, Bacon, Pickles");
+        prd2.setPrice(18);
+        prd2.setStatus("true");
+        productDao.save(prd2);
+
+    }
+
+    // Product prd3 = new Product();
+    // prd3.setId(3);
+    // prd3.setName("Chicken Alfredo");
+    // prd3.setDescription(null);
+    // prd3.setPrice(null);
+    // prd3.setStatus("Instock");
+    // productDao.save(prd3);
+
+
+    // Product prd1 = new Product();
+    // prd1.setId(1);
+    // prd1.setName("Chicken Alfredo");
+    // prd1.setDescription(null);
+    // prd1.setPrice(null);
+    // prd1.setStatus("Instock");
+    // productDao.save(prd1);
 
 }

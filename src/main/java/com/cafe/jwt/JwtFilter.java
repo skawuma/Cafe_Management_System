@@ -89,7 +89,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 token = authorizationHeader.substring(7);
                 userName = jwtUtil.extractUsername(token);
-                // CURRENT_USER=userName; 
+                CURRENT_USER=userName; 
                 claims = jwtUtil.extractAllClaims(token);
             }
 

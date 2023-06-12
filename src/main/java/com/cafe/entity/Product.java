@@ -33,18 +33,18 @@ samuelkawuma
 Mar 29, 2023
 */
 
-@Data
+//@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "product")
 
-public class Product implements Serializable {
+public class Product  {
 
 
 
 
-private static final long serialVersionUID = 123456L;
+// private static final long serialVersionUID = 123456L;
 
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,10 +70,12 @@ private Integer price;
 private String status;
 
 
+// @Column(name ="quantity")
+// private Integer quantity;
+
 public Integer getId() {
 	return id;
 }
-
 
 public void setId(Integer id) {
 	this.id = id;
@@ -130,9 +132,9 @@ public void setStatus(String status) {
 }
 
 
-public static long getSerialversionuid() {
-	return serialVersionUID;
-}
+// public static long getSerialversionuid() {
+// 	return serialVersionUID;
+// }
 
 
 

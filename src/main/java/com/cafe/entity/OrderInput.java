@@ -2,6 +2,10 @@ package com.cafe.entity;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+
 
 
 public class OrderInput {
@@ -10,11 +14,29 @@ private String email;
 private String fullName;
 private String fullAddress;
 private String contactNumber;
-private String alternateContactNumber;  
-private List<OrderProductQuantity>OrderProductQuantityList;
+private String alternateContactNumber; 
+
+private List<OrderProductQuantity>orderProductQuantityList;
 
 
 
+// @Override
+// public String toString() {
+//     return "OrderInput [email=" + email + ", fullName=" + fullName + ", fullAddress=" + fullAddress + ", contactNumber="
+//             + contactNumber + ", alternateContactNumber=" + alternateContactNumber + ", OrderProductQuantityList="
+//             + OrderProductQuantityList + "]";
+// }
+// public OrderInput() {
+// }
+// public OrderInput(String email, String fullName, String fullAddress, String contactNumber,
+//         String alternateContactNumber, List<OrderProductQuantity> orderProductQuantityList) {
+//     this.email = email;
+//     this.fullName = fullName;
+//     this.fullAddress = fullAddress;
+//     this.contactNumber = contactNumber;
+//     this.alternateContactNumber = alternateContactNumber;
+//     this.OrderProductQuantityList = orderProductQuantityList;
+// }
 public String getFullName() {
     return fullName;
 }
@@ -40,10 +62,11 @@ public void setAlternateContactNumber(String alternateContactNumber) {
     this.alternateContactNumber = alternateContactNumber;
 }
 public List<OrderProductQuantity> getOrderProductQuantityList() {
-    return OrderProductQuantityList;
+    return orderProductQuantityList;
 }
+
 public void setOrderProductQuantityList(List<OrderProductQuantity> orderProductQuantityList) {
-    OrderProductQuantityList = orderProductQuantityList;
+   this.orderProductQuantityList = orderProductQuantityList;
 }
 public String getEmail() {
     return email;

@@ -58,30 +58,30 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
 	public void initCategory(){
 
-     Category cat1 = new Category();
-	 cat1.setId(1);
-	 cat1.setName("Pizzas");
-     categoryDao.save(cat1);
+    //  Category cat1 = new Category();
+	//  cat1.setId(1);
+	//  cat1.setName("Pizzas");
+    //  categoryDao.save(cat1);
 	 
 
 
-     Category cat2 = new Category();
-	 cat2.setId(2);
-	 cat2.setName("Subs");
-     categoryDao.save(cat2);
+    //  Category cat2 = new Category();
+	//  cat2.setId(2);
+	//  cat2.setName("Subs");
+    //  categoryDao.save(cat2);
 
 
-     Category cat3 = new Category();
-	 cat3.setId(3);
-	 cat3.setName("Canolis");
-     categoryDao.save(cat3);
+    //  Category cat3 = new Category();
+	//  cat3.setId(3);
+	//  cat3.setName("Fried Rice");
+    //  categoryDao.save(cat3);
 
 
 
-     Category cat4 = new Category();
-	 cat4.setId(4);
-	 cat4.setName("Cakes");
-     categoryDao.save(cat4);
+    //  Category cat4 = new Category();
+	//  cat4.setId(4);
+	//  cat4.setName("Cakes");
+    //  categoryDao.save(cat4);
 	
 
 
@@ -142,6 +142,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
 		try {
+			// if (filterValue.equalsIgnoreCase("true")) {
 			if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
 				log.info("Inside if");
 				return new ResponseEntity<List<Category>>(categoryDao.getAllCategory(), HttpStatus.OK);

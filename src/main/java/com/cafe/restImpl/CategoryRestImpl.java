@@ -36,7 +36,7 @@ public class CategoryRestImpl implements CategoryRest {
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
 }
-@PostConstruct
+//@PostConstruct
 public void initCategory()
 {
 	categoryService.initCategory();

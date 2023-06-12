@@ -1,15 +1,25 @@
 package com.cafe.entity;
 
+import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "OrderDetails")
-public class OrderDetails {
+public class OrderDetails implements Serializable {
+
+    private static final long serialVersionUID = 123456L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +31,15 @@ public class OrderDetails {
     private String orderAlternateContactNumber;
     private String orderStatus;
     private Integer orderAmount;
-    private String paymentMethod;
+
     @OneToOne
+    @JoinColumn(name ="product_id", referencedColumnName ="id")
     private Product product;
+
     @OneToOne
+    @JsonIgnore
+    @JoinColumn(name ="user_id", referencedColumnName ="id")
     private User user;
-
-
-
-
-   
-
 
 
     
@@ -42,12 +50,18 @@ public class OrderDetails {
 
 
 
-   
 
 
 
 
-  
+
+
+
+
+
+
+
+
 
 
 
@@ -68,6 +82,20 @@ public class OrderDetails {
         this.product = product;
         this.user = user;
     }
+
+
+
+
+
+
+
+
+    public OrderDetails() {
+    }
+
+
+
+
 
 
 
@@ -160,6 +188,7 @@ public class OrderDetails {
     }
 
 
+
     public Integer getOrderAmount() {
         return orderAmount;
     }
@@ -170,14 +199,7 @@ public class OrderDetails {
     }
 
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
+    
 
 
 
@@ -191,6 +213,17 @@ public class OrderDetails {
 
     public void setOrderEmail(String orderEmail) {
         this.orderEmail = orderEmail;
+    }
+
+
+
+
+
+
+
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     } 
 
     

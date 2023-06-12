@@ -14,6 +14,7 @@ import com.cafe.rest.ProductRest;
 import com.cafe.service.ProductService;
 import com.cafe.utils.CafeUtils;
 import com.cafe.wrapper.ProductWrapper;
+import jakarta.annotation.PostConstruct;
 
 /*
 samuelkawuma
@@ -45,6 +46,12 @@ public class ProductRestImpl implements ProductRest {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostConstruct
+    public void initProduct() {
+
+        productService.initProduct();
     }
 
 	@Override
