@@ -6,6 +6,10 @@ import { ManageOrderComponent } from "./manage-order/manage-order.component";
 import { ManageProductComponent } from "./manage-product/manage-product.component";
 import { ManageUserComponent } from "./manage-user/manage-user.component";
 import { ViewBillComponent } from "./view-bill/view-bill.component";
+import { BuyProductComponent } from "./buy-product/buy-product.component";
+import { ProductViewDetailsComponent } from "./product-view-details/product-view-details.component";
+import { ShowProductDetailsComponent } from "./show-product-details/show-product-details.component";
+import { ShowProductImagesDialogComponent } from "./show-product-images-dialog/show-product-images-dialog.component";
 
 export const MaterialRoutes: Routes = [
     {
@@ -26,6 +30,45 @@ export const MaterialRoutes: Routes = [
        expectedRole: ['Admin', 'User']
       }
     },
+
+    {
+      path: 'buyproduct',
+      component: BuyProductComponent,
+      canActivate: [RouteGuardService],
+      data: {
+       // expectedRole: ['Admin']
+       expectedRole: [ 'User']
+      }
+    },
+
+    {
+      path: 'productviewdetails',
+      component: ProductViewDetailsComponent,
+      canActivate: [RouteGuardService],
+      data: {
+       // expectedRole: ['Admin']
+       expectedRole: [ 'User']
+      }
+    },
+    {
+      path: 'showproductdetails',
+      component: ShowProductDetailsComponent,
+      canActivate: [RouteGuardService],
+      data: {
+       // expectedRole: ['Admin']
+       expectedRole: [ 'User']
+      }
+    },
+    {
+      path: 'showproductimages',
+      component: ShowProductImagesDialogComponent,
+      canActivate: [RouteGuardService],
+      data: {
+       // expectedRole: ['Admin']
+       expectedRole: [ 'User']
+      }
+    },
+
     {
       path: 'order',
       component: ManageOrderComponent,

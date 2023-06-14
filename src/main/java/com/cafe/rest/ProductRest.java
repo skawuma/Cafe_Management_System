@@ -43,4 +43,6 @@ public interface ProductRest {
     @GetMapping(path = "/getById/{id}")
     ResponseEntity<ProductWrapper> getProductById(@PathVariable Integer id);
 
+
+
 }

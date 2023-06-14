@@ -19,6 +19,7 @@ export interface Menu {
     //User
     { state: 'order', type: 'link', name: 'Manage Order', icon: 'shopping_cart',role: 'User' },
     { state: 'bill', type: 'link', name: 'View Bill', icon: 'backup_table',role: 'User' },
+    { state: 'buyproduct', type: 'link', name: 'Buy Product', icon: 'payment',role: 'User' }
   ];
   
   @Injectable()

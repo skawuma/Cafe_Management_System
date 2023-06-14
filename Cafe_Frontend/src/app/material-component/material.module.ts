@@ -15,6 +15,10 @@ import { ViewBillProductsComponent } from "./dialog/view-bill-products/view-bill
 import { ManageUserComponent } from "./manage-user/manage-user.component";
 import { ConfirmationComponent } from "./dialog/confirmation/confirmation.component";
 import { NgModule } from "@angular/core";
+import { BuyProductComponent } from './buy-product/buy-product.component';
+import { ProductViewDetailsComponent } from './product-view-details/product-view-details.component';
+import { ShowProductDetailsComponent } from './show-product-details/show-product-details.component';
+import { ShowProductImagesDialogComponent } from './show-product-images-dialog/show-product-images-dialog.component';
 //import { FlexLayoutModule } from "@angular/flex-layout";
 
 
@@ -40,6 +44,10 @@ import { NgModule } from "@angular/core";
       ViewBillProductsComponent,
       ManageUserComponent,
       ConfirmationComponent,
+      BuyProductComponent,
+      ProductViewDetailsComponent,
+      ShowProductDetailsComponent,
+      ShowProductImagesDialogComponent,
       
     ]
   })
