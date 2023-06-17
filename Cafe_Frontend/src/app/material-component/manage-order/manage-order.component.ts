@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Category } from 'src/app/model/category.model';
+import { OrderDetails } from 'src/app/model/order-details.model';
+import { Product } from 'src/app/model/product.model';
 //import * as Razorpay from 'razorpay';
 
 
@@ -12,7 +16,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { SnachbarService } from 'src/app/services/snachbar.service';
 import { GlobalConstants } from 'src/shared/global-constants';
 
-declare var  Razorpay:any;
+declare var Razorpay: any;
 @Component({
   selector: 'app-manage-order',
   templateUrl: './manage-order.component.html',
@@ -20,38 +24,77 @@ declare var  Razorpay:any;
 })
 export class ManageOrderComponent implements OnInit {
 
+
+
   displayedColumns: string[] = ['name', 'category', 'price', 'quantity', 'total', 'edit'];
   dataSource: any = [];
   manageOrderForm: any = FormGroup;
-  categorys: any = [];
-  products: any = [];
+  // categorys: Category[] = [];
+
+  categorys: Category []= [];
+  products: Product[]= [];
   price: any;
   totalAmount1: any;
   totalAmount: number = 0;
-  transactionId: any; 
+  transactionId: any;
   responseMessage: any;
+  //productDetails: Product[] = [];
+  orderDetails: OrderDetails = {
+    email: '',
+    fulllName: '',
+    fullAddress: '',
+    contactNumber: '',
+    alternateContactNumber: '',
+    transactionId:'',
+    orderProductQuantityList: []
+  }
 
   constructor(private formBuilder: FormBuilder,
+    private activatedroute: ActivatedRoute,
     private categoryService: CategoryService,
     private productService: ProductService,
     private snachbarService: SnachbarService,
     private billService: BillService,
     private ngxService: NgxUiLoaderService) { }
 
-  ngOnInit() {
-    this.ngxService.start();
+//     ngOnInit():void {
+
+
+//     this.products =this.activatedroute.snapshot.data['productDetails'];
+//     this.products.forEach(
+//     x => this.orderDetails.orderProductQuantityList.push(
+//       {id:x.id,quantity:1}
+//     )
+//     );
+//       console.log ( this.products);
+// console.log (this.orderDetails);
+//     }
+
+  ngOnInit() {       
+
+        //PRODUCT DEATAILS
+      
+      this.ngxService.start();
     this.getCategorys();
+  
+
+
     this.manageOrderForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
+      
+     name: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
       email: [null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]],
       contactNumber: [null, [Validators.required, Validators.pattern(GlobalConstants.contactNumberRegex)]],
+      alternateContactNumber: [null, [Validators.required, Validators.pattern(GlobalConstants.contactNumberRegex)]],
       paymentMethod: [null, [Validators.required]],
       product: [null, [Validators.required]],
       category: [null, [Validators.required]],
       quantity: [null, [Validators.required]],
       price: [null, [Validators.required]],
       total: [0, [Validators.required]]
+   
+
     });
+    
   }
 
   getCategorys() {
@@ -74,6 +117,7 @@ export class ManageOrderComponent implements OnInit {
   getCategory(value: any) {
     this.productService.getByCategory(value.id).subscribe((response: any) => {
       this.products = response;
+     
       this.manageOrderForm.controls['price'].setValue('');
       this.manageOrderForm.controls['quantity'].setValue('');
       this.manageOrderForm.controls['total'].setValue(0);
@@ -135,25 +179,41 @@ export class ManageOrderComponent implements OnInit {
   }
 
 
-  public  placeOrder(manageOrderForm: NgForm)
-  
-  {
-    var formData = this.manageOrderForm.value;
-    var productName = this.dataSource.find((e: { id: number; }) => e.id === formData.product.id);
-    if (productName === undefined) {
-      this.totalAmount = this.totalAmount + formData.total;
-      this.dataSource.push({ id: formData.product.id, name: formData.product.name, category: formData.category.name, quantity: formData.quantity, price: formData.price, total: formData.total });
-      this.dataSource = [...this.dataSource];
-      this.snachbarService.openSnackBar(GlobalConstants.productAdded, "success");
-    }
-    else {
-      this.snachbarService.openSnackBar(GlobalConstants.productExistError, GlobalConstants.error);
-    }
+  public placeOrder(manageOrderForm: NgForm) {
+
+    this.productService.placeOrder(this.orderDetails).subscribe(
+      (resp) => {
+        console.log(resp);
+        manageOrderForm.reset();
+
+      },
+      (err) => {
+        console.log(err);
+      }
+
+    );
   }
 
-  add()
-  
-  {
+
+
+
+
+
+
+  // var formData = this.manageOrderForm.value;
+  // var productName = this.dataSource.find((e: { id: number; }) => e.id === formData.product.id);
+  // if (productName === undefined) {
+  //   this.totalAmount = this.totalAmount + formData.total;
+  //   this.dataSource.push({ id: formData.product.id, name: formData.product.name, category: formData.category.name, quantity: formData.quantity, price: formData.price, total: formData.total });
+  //   this.dataSource = [...this.dataSource];
+  //   this.snachbarService.openSnackBar(GlobalConstants.productAdded, "success");
+  // }
+  // else {
+  //   this.snachbarService.openSnackBar(GlobalConstants.productExistError, GlobalConstants.error);
+  // }
+
+
+  add() {
     var formData = this.manageOrderForm.value;
     var productName = this.dataSource.find((e: { id: number; }) => e.id === formData.product.id);
     if (productName === undefined) {
@@ -172,7 +232,7 @@ export class ManageOrderComponent implements OnInit {
     this.dataSource.splice(value, 1);
     this.dataSource = [...this.dataSource];
   }
- 
+
   submitAction() {
     var formData = this.manageOrderForm.value;
     var data = {
@@ -211,123 +271,123 @@ export class ManageOrderComponent implements OnInit {
         this.ngxService.stop();
       }
     );
-  } 
+  }
 
 
-  createTransactionAndPlaceOrder( manageOrderForm: NgForm){
+  createTransactionAndPlaceOrder(manageOrderForm: NgForm) {
     var formData = this.manageOrderForm.value;
-   // this.totalAmount = this.totalAmount + formData.total;
+    // this.totalAmount = this.totalAmount + formData.total;
     //this.totalAmount = this.totalAmount;
-   //let amount = this.totalAmount.toString();
-   let amount =  formData.total;
+    //let amount = this.totalAmount.toString();
+    let amount = formData.total;
 
     this.productService.createTransaction(amount).subscribe(
-      (response)=>{
+      (response) => {
         console.log(response);
-        this.openTransactionModal(response,manageOrderForm);
+        this.openTransactionModal(response, manageOrderForm);
       },
-    (error) => {
-      console.log(error);
-    }
+      (error) => {
+        console.log(error);
+      }
     )
 
   }
 
-openTransactionModal(response: any, manageOrderForm: NgForm){
-  var formData = this.manageOrderForm.value;
-  var options ={
-order_id: response.order_id,
-key: response.key,
-amount: response.amount,
-currency: response.currency,
-name: formData.name,
-description:'payment made to',
+  openTransactionModal(response: any, manageOrderForm: NgForm) {
+    var formData = this.manageOrderForm.value;
+    var options = {
+      order_id: response.order_id,
+      key: response.key,
+      amount: response.amount,
+      currency: response.currency,
+      name: formData.name,
+      description: 'payment made to',
 
 
 
-config: {
-  display: {
-    blocks: {
-      banks: {
-        name: 'All payment methods',
-        instruments: [
-          {
-            method: 'upi'
+      config: {
+        display: {
+          blocks: {
+            banks: {
+              name: 'All payment methods',
+              instruments: [
+                {
+                  method: 'upi'
+                },
+                {
+                  method: 'card'
+                },
+
+                {
+                  method: 'wallet',
+                  wallets: ['freecharge']
+                },
+
+                {
+                  method: 'wallet',
+                  wallets: ['olamoney']
+                },
+                {
+                  method: 'netbanking'
+                }
+              ],
+            },
           },
-          {
-            method: 'card'
+          sequence: ['block.banks'],
+          preferences: {
+            show_default_blocks: true,
           },
-
-          {
-            method: 'wallet',
-            wallets: ['freecharge']
-          },
-
-          {
-              method: 'wallet',
-              wallets: ['olamoney']
-          },
-          {
-              method: 'netbanking'
-          }
-        ],
+        },
       },
-    },
-    sequence: ['block.banks'],
-    preferences: {
-      show_default_blocks: true,
-    },
-  },
-},
-// image:'',
-handler: (response:any) =>{
-  if (response!=null && response.razor_payment_id !=null){
+      // image:'',
+      handler: (response: any) => {
+        if (response != null && response.razor_payment_id != null) {
 
 
-    this.processResponse(response,manageOrderForm);
+          this.processResponse(response, manageOrderForm);
+        }
+        else {
+
+          alert("payment failed..")
+        }
+
+      },
+
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        contactNumber: formData.contactNumber,
+        // paymentMethod: formData.paymentMethod,
+        // totalAmount: this.totalAmount.toString(),
+        // productDetails: JSON.stringify(this.dataSource)
+
+      },
+
+
+
+      notes: {
+
+        address: 'Stellas Confectionery'
+
+      },
+      theme: {
+        color: '#F37254'
+      },
+
+
+    };
+
+
+
+    var razorPayObject = new Razorpay(options);
+    razorPayObject.open();
   }
-  else{
 
-    alert("payment failed..")
+  processResponse(resp: any, manageOrderForm: NgForm) {
+    //console.log(resp);
+    this.transactionId = resp.razor_payment_id;
+    this.placeOrder(manageOrderForm);
   }
-
-},
-
-prefill:{
-  name: formData.name,
-  email: formData.email,
-  contactNumber: formData.contactNumber,
-  // paymentMethod: formData.paymentMethod,
-  // totalAmount: this.totalAmount.toString(),
-  // productDetails: JSON.stringify(this.dataSource)
-
-},
-
-
-
-notes:{
-
-address:'Stellas Confectionery'
-
-},
-theme:{
-  color:'#F37254'
-},
-
-
-  };
-
-
-
-  var razorPayObject = new Razorpay(options);
-  razorPayObject.open();
-}
-
-processResponse(resp:any,manageOrderForm: NgForm){
-//console.log(resp);
-this.transactionId= resp.razor_payment_id;
-this.placeOrder(manageOrderForm);
-}
 
 
 
@@ -358,7 +418,7 @@ this.placeOrder(manageOrderForm);
   //         return;
   //       }
 
-  //       // For other browsers: 
+  //       // For other browsers:
   //       // Create a link pointing to the ObjectURL containing the blob.
   //       const data = window.URL.createObjectURL(newBlob);
 

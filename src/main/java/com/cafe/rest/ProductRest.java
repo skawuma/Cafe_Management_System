@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cafe.entity.Product;
 import com.cafe.wrapper.ProductWrapper;
 
 @RequestMapping(path="/product")
@@ -43,6 +44,8 @@ public interface ProductRest {
     @GetMapping(path = "/getById/{id}")
     ResponseEntity<ProductWrapper> getProductById(@PathVariable Integer id);
 
-
+    @GetMapping(path = "/getProductDetails/{isSingleProductCheckout}/{id}")
+    public List<Product>getProductDetails(@PathVariable( name = "isSingleProductCheckout")boolean isSingleProductCheckout,
+                                  @PathVariable( name = "id" )Integer id);
 
 }

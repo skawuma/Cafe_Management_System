@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.cafe.entity.Product;
 import com.cafe.wrapper.ProductWrapper;
 
 /*
@@ -28,5 +29,7 @@ public interface ProductService {
 	ResponseEntity<List<ProductWrapper>> getByCategory(Integer id);
 
 	ResponseEntity<ProductWrapper> getProductById(Integer id);
+
+	public List<Product>getProductDetails(boolean isSingleProductCheckout, Integer id);
 
 }

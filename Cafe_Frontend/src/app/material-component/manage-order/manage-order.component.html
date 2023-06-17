@@ -7,13 +7,16 @@
 <mat-card>
     <b><span>Customer Details:</span></b>
 
-    <form [formGroup]="manageOrderForm">
+    <form [formGroup]="manageOrderForm" (ngSubmit)="createTransactionAndPlaceOrder(manageOrderForm)">
         <div fxFlex fxLayout="column">
             <div fxLayout="row wrap">
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label> Name
                     </mat-label>
-                    <input matInput formControlName="name" required>
+                    <input matInput 
+                    [(ngModel)]="orderDetails.fulllName"
+                    
+                    formControlName="name" required>
                     <mat-error *ngIf="manageOrderForm.controls.name.touched && manageOrderForm.controls.name.invalid">
                         <span *ngIf="manageOrderForm.controls.name.errors.required">This field is mandatory.</span>
                         <span *ngIf="manageOrderForm.controls.name.errors.pattern">This field is invalid.</span>
@@ -22,7 +25,9 @@
                 <mat-form-field appearance="standard" fxFlex> 
                     <mat-label> Email
                     </mat-label>
-                    <input matInput formControlName="email" required>
+                    <input matInput 
+                    [(ngModel)]="orderDetails.email"
+                    formControlName="email" required>
                     <mat-error *ngIf="manageOrderForm.controls.email.touched && manageOrderForm.controls.email.invalid">
                         <span *ngIf="manageOrderForm.controls.email.errors.required">This field is mandatory.</span>
                         <span *ngIf="manageOrderForm.controls.email.errors.pattern">This field is invalid.</span>
@@ -31,7 +36,9 @@
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label> Contact Number
                     </mat-label>
-                    <input matInput formControlName="contactNumber" required>
+                    <input matInput 
+                    [(ngModel)]="orderDetails.contactNumber"
+                    formControlName="contactNumber" required>
                     <mat-error
                         *ngIf="manageOrderForm.controls.contactNumber.touched && manageOrderForm.controls.contactNumber.invalid">
                         <span *ngIf="manageOrderForm.controls.contactNumber.errors.required">This field is
@@ -40,6 +47,26 @@
                             invalid.</span>
                     </mat-error>
                 </mat-form-field>
+                
+
+
+         
+    <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Alternate Contact Number
+        </mat-label>
+        <input matInput 
+        [(ngModel)]="orderDetails.alternateContactNumber"
+        formControlName="alternateContactNumber" required>
+        <mat-error
+            *ngIf="manageOrderForm.controls.alternateContactNumber.touched && manageOrderForm.controls.alternateContactNumber.invalid">
+            <span *ngIf="manageOrderForm.controls.contactNumber.errors.required">This field is
+                mandatory.</span>
+            <span *ngIf="manageOrderForm.controls.contactNumber.errors.pattern">This field is
+                invalid.</span>
+        </mat-error>
+    </mat-form-field>
+
+            
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label>Payment Method</mat-label>
                     <mat-select formControlName="paymentMethod" required>
@@ -58,7 +85,9 @@
             </div>
         </div>
 
-
+        <div align = "center">
+            <button id="rzp-button1" type=" submit" mat-stroked-button color = "warn">Place Order </button>
+           </div>
 
     </form>
 </mat-card>
@@ -68,12 +97,15 @@
 
 
     <form [formGroup]="manageOrderForm" (ngSubmit)="createTransactionAndPlaceOrder(manageOrderForm)">
+        <!-- createTransactionAndPlaceOrder -->
     <!-- <form [formGroup]="manageOrderForm"> -->
         <div fxFlex fxLayout="column">
             <div fxLayout="row wrap">
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label>Category</mat-label>
-                    <mat-select formControlName="category" (selectionChange)="getCategory($event.value)">
+                    <mat-select 
+                
+                    formControlName="category" (selectionChange)="getCategory($event.value)">
                         <mat-option *ngFor="let category of categorys" [value]="category">
                             {{category.name}}
                         </mat-option>
@@ -81,7 +113,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label>Product</mat-label>
-                    <mat-select formControlName="product" (selectionChange)="getProductDetails($event.value)">
+                    <mat-select 
+                    formControlName="product" (selectionChange)="getProductDetails($event.value)">
                         <mat-option *ngFor="let category of products" [value]="category">
                             {{category.name}}
                         </mat-option>
@@ -117,9 +150,7 @@
             </div>
         </div>
         <!-- <button id="rzp-button1">Pay</button> -->
-             <div align = "center">
-              <button id="rzp-button1" type=" submit" mat-stroked-button color = "warn">Place Order </button>
-             </div>
+           
     </form>
     <div>
         <button mat-flat-button color="primary" [disabled]="validateProductAdd()" (click)="add()">Add</button>

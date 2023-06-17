@@ -15,6 +15,7 @@ private String fullName;
 private String fullAddress;
 private String contactNumber;
 private String alternateContactNumber; 
+private String transactionId;
 
 private List<OrderProductQuantity>orderProductQuantityList;
 
@@ -73,6 +74,12 @@ public String getEmail() {
 }
 public void setEmail(String email) {
     this.email = email;
+}
+public String getTransactionId() {
+    return transactionId;
+}
+public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
 } 
 
 

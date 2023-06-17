@@ -82,7 +82,9 @@ JwtFilter jwtFilter;
        ORDER_PLACED,
        product.getPrice()*  o.getQuantity(),
 
-        product, user); 
+        product, user,
+        orderInput.getTransactionId()
+        ); 
     orderDetailsDao.save( orderDetails);
 
    }

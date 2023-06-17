@@ -231,9 +231,8 @@ public class ProductServiceImpl implements ProductService {
         prd2.setStatus("true");
         productDao.save(prd2);
 
-    }
 
-    // Product prd3 = new Product();
+        // Product prd3 = new Product();
     // prd3.setId(3);
     // prd3.setName("Chicken Alfredo");
     // prd3.setDescription(null);
@@ -249,5 +248,30 @@ public class ProductServiceImpl implements ProductService {
     // prd1.setPrice(null);
     // prd1.setStatus("Instock");
     // productDao.save(prd1);
+
+
+
+    }
+
+    @Override
+    public List<Product> getProductDetails(boolean isSingleProductCheckout, Integer id) {
+
+        if(isSingleProductCheckout){
+            //we are going to buy a single product
+
+            List<Product> list = new  ArrayList<>();
+            Product product = productDao.findById(id).get();
+            list.add(product);
+            return list;
+
+        }else{
+            //we are going to checkout entire cart
+
+            return new ArrayList<>();
+        }
+
+    }
+
+  
 
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe.constants.CafeConstants;
+import com.cafe.entity.Product;
 import com.cafe.rest.ProductRest;
 import com.cafe.service.ProductService;
 import com.cafe.utils.CafeUtils;
@@ -102,6 +103,17 @@ public class ProductRestImpl implements ProductRest {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ProductWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public List<Product>getProductDetails(boolean isSingleProductCheckout, Integer id) {
+        try {
+          return   productService.getProductDetails( isSingleProductCheckout, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ArrayList<>();
+       
     }
 
 }

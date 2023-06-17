@@ -43,48 +43,23 @@ public class OrderDetails implements Serializable {
 
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   private String transactionId;
 
 
     public OrderDetails(String orderEmail, String orderFullName, String orderFullAddress, String orderContactNumber,
-            String orderAlternateContactNumber, String orderStatus, Integer orderAmount, Product product, User user) {
-        this.orderEmail = orderEmail;
-        this.orderFullName = orderFullName;
-        this.orderFullAddress = orderFullAddress;
-        this.orderContactNumber = orderContactNumber;
-        this.orderAlternateContactNumber = orderAlternateContactNumber;
-        this.orderStatus = orderStatus;
-        this.orderAmount = orderAmount;
-        this.product = product;
-        this.user = user;
-    }
-
-
-
+        String orderAlternateContactNumber, String orderStatus, Integer orderAmount, Product product, User user,
+        String transactionId) {
+    this.orderEmail = orderEmail;
+    this.orderFullName = orderFullName;
+    this.orderFullAddress = orderFullAddress;
+    this.orderContactNumber = orderContactNumber;
+    this.orderAlternateContactNumber = orderAlternateContactNumber;
+    this.orderStatus = orderStatus;
+    this.orderAmount = orderAmount;
+    this.product = product;
+    this.user = user;
+    this.transactionId = transactionId;
+}
 
 
 
@@ -97,7 +72,13 @@ public class OrderDetails implements Serializable {
 
 
 
-
+    public String getTransactionId() {
+        return transactionId;
+    }
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    } 
+    
 
 
     public Product getProduct() {

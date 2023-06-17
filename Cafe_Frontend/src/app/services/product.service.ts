@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { OrderDetails } from '../model/order-details.model';
+import { Product } from '../model/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -73,4 +75,16 @@ export class ProductService {
     // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
     return this.httpClient.post(uri, data, { responseType: 'blob' });
   }
+
+  public getProductDectails(isSingleProductCheckout: any, id: any){
+
+    return this.httpClient.get<Product[]>(this.url + "/pproduct/getProductDetails"+ isSingleProductCheckout+"/"+id);
+  }
+
+  
+public placeOrder(orderDetails:OrderDetails){
+
+  return this.httpClient.post(this.url + "/placeOrder", orderDetails);
+}
+
 }

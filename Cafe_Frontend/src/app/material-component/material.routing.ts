@@ -31,6 +31,10 @@ export const MaterialRoutes: Routes = [
       }
     },
 
+    //     resolve :{
+
+
+    // },
     {
       path: 'buyproduct',
       component: BuyProductComponent,
